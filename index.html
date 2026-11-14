@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBox - Portal Estudiantil Definitivo</title>
+    <style>
+        :root {
+            --bg-color: #e2e8f0;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --header-grad: linear-gradient(135deg, #6366f1, #a855f7);
+            --subtext-color: #4b5563;
+        }
+
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --header-grad: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --subtext-color: #94a3b8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0; padding: 0; padding-bottom: 95px;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative; min-height: 100vh;
+        }
+
+        body.bg-burbujas {
+            background-color: #e0f2fe;
+            background-image: radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.4) 12px, transparent 13px), radial-gradient(circle at 70% 60%, rgba(147, 197, 253, 0.5) 18px, transparent 19px);
+            background-size: 140px 140px;
+        }
+        body.dark-mode.bg-burbujas { background-color: #0c4a6e; background-image: radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.3) 12px, transparent 13px); background-size: 140px 140px; }
+
+        body.bg-estrellitas {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at 15% 25%, #fde047 3px, transparent 4px), radial-gradient(circle at 80% 15%, #fef08a 4px, transparent 5px), radial-gradient(circle at 50% 50%, #fde047 2px, transparent 3px);
+            background-size: 120px 120px;
+        }
+
+        body.bg-matematicas {
+            background-color: #f8fafc;
+            background-image: linear-gradient(30deg, #cbd5e1 12%, transparent 12.5%, transparent 87%, #cbd5e1 87.5%, #cbd5e1), linear-gradient(150deg, #cbd5e1 12%, transparent 12.5%, transparent 87%, #cbd5e1 87.5%, #cbd5e1);
+            background-size: 60px 100px;
+        }
+        body.dark-mode.bg-matematicas { background-color: #1e293b; background-image: linear-gradient(30deg, #475569 12%, transparent 12.5%, transparent 87%, #475569 87.5%, #475569); background-size: 60px 100px; }
+
+        body.bg-corazones {
+            background-color: #fdf2f8;
+            background-image: radial-gradient(circle at 25% 25%, #f472b6 6px, transparent 7px), radial-gradient(circle at 75% 75%, #f472b6 8px, transparent 9px);
+            background-size: 100px 100px;
+        }
+        body.dark-mode.bg-corazones { background-color: #310413; background-image: radial-gradient(circle at 25% 25%, #db2777 6px, transparent 7px); background-size: 100px 100px; }
+
+        .biblioteca-fondos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .opcion-fondo { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 14px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .preview-mini { height: 45px; border-radius: 8px; margin-bottom: 6px; }
+
+        .header-perfil { background: var(--header-grad); padding: 22px; display: flex; align-items: center; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header-perfil .avatar { width: 55px; height: 55px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-right: 15px; overflow: hidden; border: 2px solid rgba(255,255,255,0.5); }
+        .header-perfil h1 { color: white; font-size: 19px; margin: 0; }
+
+        .grid-tarjetas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px; margin-bottom: 15px; }
+        .tarjeta { background: var(--card-bg); color: var(--text-color); padding: 16px 12px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; cursor: pointer; border: 1px solid var(--border-color); }
+        .icono-tarjeta { font-size: 26px; }
+        .tarjeta h3 { font-size: 11px; margin: 0; font-weight: bold; }
+
+        .tarjeta-frase { background: var(--card-bg); border: 3px double #a5b4fc; outline: 2px solid #e0e7ff; border-radius: 18px; padding: 22px 16px; margin: 15px; text-align: center; }
+        .tarjeta-frase p { font-size: 13px; margin: 0; color: var(--subtext-color); font-style: italic; }
+
+        .tarjeta-azul { border-left: 5px solid #3b82f6; }
+        .tarjeta-verde { border-left: 5px solid #10b981; }
+        .tarjeta-rosa { border-left: 5px solid #ec4899; }
+
+        .seccion-bienvenida { display: flex; align-items: center; background: var(--card-bg); color: var(--text-color); margin: 15px; padding: 18px; border-radius: 18px; border: 1px solid var(--border-color); }
+        .logo-sb { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; font-weight: bold; font-size: 20px; padding: 14px 18px; border-radius: 14px; margin-right: 15px; }
+
+        .nav-inferior { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--card-bg); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 12px 0; z-index: 1000; }
+        .nav-item { text-decoration: none; color: #9ca3af; font-size: 11px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .nav-item.activo { color: #2563eb; font-weight: bold; }
+        .nav-icon { font-size: 20px; margin-bottom: 3px; }
+
+        .tarjeta-seccion { background: var(--card-bg); color: var(--text-color); border-radius: 18px; padding: 22px; margin: 15px; border: 1px solid var(--border-color); text-align: center; }
+        .dia-calendario { padding: 8px 2px; font-size: 11px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); cursor: pointer; text-align: center; }
+        .dia-seleccionado { background: #6366f1 !important; color: white !important; font-weight: bold; border-color: #4f46e5 !important; }
+
+        .paleta-pastel { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; flex-wrap: wrap; }
+        .circulo-pastel { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
+        .circulo-pastel:hover { transform: scale(1.1); }
+        .circulo-pastel.seleccionado { border-color: #1f2937; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
+
+        #modal-zoom { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        #modal-zoom img { max-width: 100%; max-height: 90vh; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="bg-burbujas">
+    <header class="header-perfil">
+        <div class="avatar" id="header-avatar">👤</div>
+        <div>
+            <h1 id="header-nombre">ESTUDIANTE</h1>
+            <p id="header-desc" style="color: rgba(255,255,255,0.8); font-size: 11px; margin: 2px 0 0 0;">Especialidad en Programación</p>
+        </div>
+    </header>
+
+    <!-- VISTA 1: INICIO -->
+    <section id="vista-inicio" class="vista">
+        <div class="tarjeta-frase">
+            <p id="frase-texto">"El éxito es la suma de pequeños esfuerzos repetidos día tras día."</p>
+        </div>
+        <main class="grid-tarjetas">
+            <div class="tarjeta tarjeta-azul" onclick="abrirAgenda()"><span class="icono-tarjeta">✏️</span><h3 id="txt-card-agenda">AGENDA DE TAREAS</h3></div>
+            <div class="tarjeta tarjeta-verde" onclick="abrirNotas()"><span class="icono-tarjeta">📝</span><h3 id="txt-card-notas">NOTA Y APUNTES</h3></div>
+            <div class="tarjeta tarjeta-rosa" onclick="abrirCalendario()"><span class="icono-tarjeta">📅</span><h3 id="txt-card-cal">CALENDARIO</h3></div>
+        </main>
+        <div class="seccion-bienvenida">
+            <div class="logo-sb">SB</div>
+            <div class="texto-bienvenida"><h2 id="txt-bienvenida">HOLA QUE BUENO VERTE</h2></div>
+        </div>
+    </section>
+
+    <!-- VISTA 2: FUNCIONES -->
+    <section id="vista-funciones" class="vista" style="display: none;">
+        <main class="grid-tarjetas" style="margin-top: 15px;">
+            <div class="tarjeta tarjeta-azul" onclick="abrirAgenda()"><span class="icono-tarjeta">✏️</span><h3 id="txt-card-agenda2">AGENDA DE TAREAS</h3></div>
+            <div class="tarjeta tarjeta-verde" onclick="abrirNotas()"><span class="icono-tarjeta">📝</span><h3 id="txt-card-notas2">NOTA Y APUNTES</h3></div>
+            <div class="tarjeta tarjeta-rosa" onclick="abrirCalendario()"><span class="icono-tarjeta">📅</span><h3 id="txt-card-cal2">CALENDARIO</h3></div>
+        </main>
+    </section>
+
+    <!-- VISTA 3: AGENDA -->
+    <section id="vista-agenda" class="vista" style="display: none;">
+        <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
+            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="txt-title-agenda">✏️ Agenda de Tareas Avanzada</h3>
+            <div style="margin: 15px 0; background: rgba(148,163,184,0.1); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 6px;">
+                    <span id="txt-progreso-label">Progreso de Actividades</span>
+                    <span id="texto-porcentaje-global">0% (0/0)</span>
+                </div>
+                <div style="background: rgba(148,163,184,0.3); border-radius: 8px; height: 12px; overflow: hidden;">
+                    <div id="barra-progreso-global" style="background: #10b981; width: 0%; height: 100%;"></div>
+                </div>
+            </div>
+            <div style="background: rgba(148,163,184,0.08); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color);">
+                <h4 style="margin: 0 0 10px 0; font-size: 13px;" id="txt-nueva-tarea">Registrar Nueva Tarea</h4>
+                <input type="text" id="task-titulo" placeholder="Título de la tarea..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                <textarea id="task-desc" placeholder="Detalles o notas de la tarea..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; height: 60px; background: var(--card-bg); color: var(--text-color); resize: none;"></textarea>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;" id="txt-adjuntar-img">Adjuntar Imagen:</label>
+                    <input type="file" id="task-img-input" accept="image/*" style="font-size: 11px; width: 100%;">
+                </div>
+                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;" id="txt-fecha-limite">Fecha límite de entrega:</label>
+                <input type="datetime-local" id="task-fecha" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                <button id="btn-guardar-tarea" style="width: 100%; background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px;">Guardar Tarea en Agenda</button>
+            </div>
+            <div id="lista-tareas" style="margin-top: 20px;"><p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay tareas registradas.</p></div>
+        </div>
+    </section>
+
+    <!-- VISTA 4: NOTAS -->
+    <section id="vista-notas" class="vista" style="display: none;">
+        <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0; font-size: 16px;" id="txt-title-notas">📝 Nota y Apuntes</h3>
+                <button id="btn-nueva-nota" style="background: #10b981; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 11px; cursor: pointer;">+ Nueva Nota</button>
+            </div>
+            <div id="contenedor-lista-notas"><div id="lista-notas"><p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay notas guardadas.</p></div></div>
+            <div id="editor-nota-view" style="display: none;">
+                <button id="btn-volver-notas" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; margin-bottom: 12px;">← Volver a la lista</button>
+                <input type="text" id="nota-input-titulo" placeholder="Título de la nota..." style="width: 100%; box-sizing: border-box; padding: 10px; font-size: 14px; font-weight: bold; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; background: var(--card-bg); color: var(--text-color);">
+                
+                <div style="display: flex; gap: 6px; align-items: center; background: rgba(148,163,184,0.15); padding: 6px; border-radius: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <button type="button" onclick="formatText('bold')" style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: pointer;"><b>B</b></button>
+                    <button type="button" onclick="formatText('italic')" style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; font-style: italic; cursor: pointer;"><i>I</i></button>
+                    <button type="button" onclick="formatText('insertUnorderedList')" style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; cursor: pointer;">📋</button>
+                    <button type="button" onclick="formatText('justifyLeft')" style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 4px; cursor: pointer;" title="Izquierda">⬅️</button>
+                    <button type="button" onclick="formatText('justifyCenter')" style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 4px; cursor: pointer;" title="Centro">⏺️</button>
+                    <button type="button" onclick="formatText('justifyRight')" style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 4px; cursor: pointer;" title="Derecha">➡️</button>
+                    <label style="background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">🖼️ <input type="file" id="nota-img-file" accept="image/*" style="display:none;" onchange="insertarImagenNota(this)"></label>
+                </div>
+                <div id="nota-contenido" contenteditable="true" style="width: 100%; min-height: 200px; box-sizing: border-box; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg); color: var(--text-color); outline: none; overflow-y: auto;"></div>
+                <span id="nota-fecha-info" style="font-size: 10px; color: #9ca3af; display: block; margin-top: 8px;"></span>
+            </div>
+        </div>
+    </section>
+    <!-- VISTA 5: CALENDARIO -->
+    <section id="vista-calendario" class="vista" style="display: none;">
+        <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
+            <h3 style="margin: 0 0 15px 0; font-size: 16px;" id="txt-title-cal">📅 Calendario Avanzado</h3>
+            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <button onclick="cambiarVistaCal('mes')" id="btn-vista-mes" style="flex: 1; background: #3b82f6; color: white; border: none; padding: 6px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer;">Mes</button>
+                <button onclick="cambiarVistaCal('semana')" id="btn-vista-semana" style="flex: 1; background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer;">Semana</button>
+            </div>
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 6px;">
+                <button onclick="navegarMesClick(-1)" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; font-weight: bold; cursor: pointer;">◀</button>
+                <select id="select-mes" onchange="actualizarCalendarioSelect()" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                    <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option><option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option><option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option><option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
+                </select>
+                <select id="select-anio" onchange="actualizarCalendarioSelect()" style="width: 80px; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                    <option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option><option value="2029">2029</option><option value="2030">2030</option>
+                </select>
+                <button onclick="navegarMesClick(1)" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; font-weight: bold; cursor: pointer;">▶</button>
+            </div>
+
+            <div style="background: rgba(148,163,184,0.08); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 10px; font-weight: bold; color: #6b7280; margin-bottom: 6px;">
+                    <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                </div>
+                <div id="dias-calendario-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center;"></div>
+            </div>
+
+            <div style="background: rgba(148,163,184,0.12); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 15px;">
+                <h4 style="margin: 0 0 8px 0; font-size: 12px;" id="txt-crear-evento">➕ Crear Evento con Temporizador</h4>
+                <input type="text" id="evento-titulo" placeholder="Nombre del evento o meta..." style="width: 100%; box-sizing: border-box; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; background: var(--card-bg); color: var(--text-color);">
+                <input type="date" id="evento-fecha" style="width: 100%; box-sizing: border-box; padding: 8px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 11px; background: var(--card-bg); color: var(--text-color);">
+                
+                <div style="margin-bottom: 10px;">
+                    <span style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 6px;">🎨 Selecciona un Color Pastel:</span>
+                    <div class="paleta-pastel">
+                        <div class="circulo-pastel seleccionado" style="background-color: #fbcfe8;" onclick="seleccionarColorPastel('#fbcfe8', this)" title="Rosa Pastel"></div>
+                        <div class="circulo-pastel" style="background-color: #bae6fd;" onclick="seleccionarColorPastel('#bae6fd', this)" title="Azul Pastel"></div>
+                        <div class="circulo-pastel" style="background-color: #a7f3d0;" onclick="seleccionarColorPastel('#a7f3d0', this)" title="Menta Pastel"></div>
+                        <div class="circulo-pastel" style="background-color: #ddd6fe;" onclick="seleccionarColorPastel('#ddd6fe', this)" title="Lavanda Pastel"></div>
+                        <div class="circulo-pastel" style="background-color: #fef08a;" onclick="seleccionarColorPastel('#fef08a', this)" title="Amarillo Pastel"></div>
+                        <div class="circulo-pastel" style="background-color: #fed7aa;" onclick="seleccionarColorPastel('#fed7aa', this)" title="Durazno Pastel"></div>
+                    </div>
+                    <input type="hidden" id="evento-color" value="#fbcfe8">
+                </div>
+
+                <button onclick="guardarEventoCal()" style="width: 100%; background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px;" id="txt-btn-guardar-ev">Guardar Evento y Temporizador</button>
+            </div>
+            <h4 style="margin: 0 0 10px 0; font-size: 13px;" id="txt-lista-ev">⏳ Lista de Eventos y Temporizadores</h4>
+            <div id="lista-eventos-cal" style="display: flex; flex-direction: column; gap: 8px;"><p style="font-size: 11px; color: #9ca3af; text-align: center;">No hay eventos registrados.</p></div>
+        </div>
+    </section>
+
+    <!-- VISTA 6: PERFIL -->
+    <section id="vista-perfil" class="vista" style="display: none;">
+        <div class="tarjeta-seccion" style="padding: 30px 20px;">
+            <div id="nube-pensamiento" onclick="editarPensamiento()" style="background: rgba(99,102,241,0.12); border: 2px dashed #6366f1; border-radius: 20px; padding: 12px 16px; margin: 0 auto 20px auto; max-width: 250px; cursor: pointer;">
+                <span style="font-size: 18px;">💭</span>
+                <p id="texto-pensamiento" style="margin: 4px 0 0 0; font-size: 12px; font-style: italic;">Toca para escribir lo que piensas...</p>
+            </div>
+            <div style="position: relative; display: inline-block; margin-bottom: 15px;">
+                <div id="avatar-preview" style="width: 100px; height: 100px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; font-size: 50px; overflow: hidden; margin: 0 auto; border: 3px solid #6366f1;">👤</div>
+                <label for="input-foto" style="position: absolute; bottom: 0; right: 0; background: #4f46e5; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px;" title="Cambiar foto">📷</label>
+                <input type="file" id="input-foto" accept="image/*" style="display: none;" onchange="subirFotoPropia(this)">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="input-nombre-perfil" placeholder="Tu nombre..." value="ESTUDIANTE" oninput="actualizarPerfilInfo()" style="width: 80%; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; font-weight: bold; text-align: center; background: var(--card-bg); color: var(--text-color); margin-bottom: 8px;">
+                <input type="text" id="input-desc-perfil" placeholder="Tu especialidad o descripción..." value="Especialidad en Programación" oninput="actualizarPerfilInfo()" style="width: 80%; padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; text-align: center; background: var(--card-bg); color: var(--text-color);">
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA 7: CONFIGURACIÓN -->
+    <section id="vista-configuracion" class="vista" style="display: none;">
+        <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
+            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="txt-title-config">⚙️ Configuración del Sistema</h3>
+            <div style="margin: 18px 0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: bold;" id="txt-label-lang">🌐 Idioma / Language</span>
+                <select id="select-idioma" onchange="cambiarIdioma(this.value)" style="padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div style="margin: 18px 0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: bold;" id="txt-label-dark">🌙 Modo Oscuro</span>
+                <button id="btn-modo-oscuro" onclick="toggleModoOscuro()" style="background: #334155; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;">Activar</button>
+            </div>
+            <div style="margin: 18px 0;">
+                <span style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 10px;" id="txt-label-fondos">🎨 Biblioteca de Fondos</span>
+                <div class="biblioteca-fondos">
+                    <div class="opcion-fondo" onclick="cambiarFondoPantalla('bg-burbujas')">
+                        <div class="preview-mini" style="background: #bae6fd; border: 1px solid #38bdf8;"></div>
+                        <span style="font-size: 11px; font-weight: bold;">Burbujitas 🫧</span>
+                    </div>
+                    <div class="opcion-fondo" onclick="cambiarFondoPantalla('bg-estrellitas')">
+                        <div class="preview-mini" style="background: #0f172a; border: 1px solid #fde047;"></div>
+                        <span style="font-size: 11px; font-weight: bold;">Estrellitas ✨</span>
+                    </div>
+                    <div class="opcion-fondo" onclick="cambiarFondoPantalla('bg-matematicas')">
+                        <div class="preview-mini" style="background: #f1f5f9; border: 1px solid #94a3b8;"></div>
+                        <span style="font-size: 11px; font-weight: bold;" id="txt-fon-mat">Matemáticas 📐</span>
+                    </div>
+                    <div class="opcion-fondo" onclick="cambiarFondoPantalla('bg-corazones')">
+                        <div class="preview-mini" style="background: #fdf2f8; border: 1px solid #f472b6;"></div>
+                        <span style="font-size: 11px; font-weight: bold;">Corazones 💕</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin: 18px 0; background: rgba(148,163,184,0.1); padding: 12px; border-radius: 12px; border: 1px solid var(--border-color);">
+                <h4 style="margin: 0 0 6px 0; font-size: 13px;" id="txt-about-title">ℹ️ Acerca de StudyBox</h4>
+                <p style="margin: 0; font-size: 11px; color: var(--subtext-color); line-height: 1.4;" id="txt-about-desc">
+                    StudyBox versión 1<br><br>
+                    <b>Desarrolladores:</b><br>
+                    • EMILIANO NUÑEZ HERNÁNDEZ - PROGRAMADOR<br>
+                    • ISABELLA JAZMIN JIMÉNEZ VILLALOBOS - DISEÑADORA<br>
+                    • KEVIN ALEJANDRO CABRERA ANTONIO - COORDINADOR DE PROYECTO<br>
+                    • CARLOS PATRICIO SÁNCHEZ MARTINEZ - TESTER<br><br>
+                    🇲🇽 STUDYBOXBOX FUE HECHO EN MÉXICO ALTAMIRA TAMAULIPAS
+                </p>
+            </div>
+            <div style="margin: 18px 0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: bold;" id="txt-label-reset">Restablecer datos de fábrica</span>
+                <button onclick="location.reload()" style="background: #fee2e2; color: #dc2626; border: none; padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;" id="txt-btn-borrar">Borrar</button>
+            </div>
+        </div>
+    </section>
+  <!-- Modal para Zoom de Imágenes en Agenda -->
+    <div id="modal-zoom" onclick="cerrarZoom()">
+        <img id="img-zoom-contenido" src="" alt="Zoom de imagen">
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <nav class="nav-inferior">
+        <a href="#" class="nav-item activo" id="nav-btn-inicio"><span class="nav-icon">🏠</span><span id="txt-nav-inicio">inicio</span></a>
+        <a href="#" class="nav-item" id="nav-btn-func"><span class="nav-icon">📁</span><span id="txt-nav-func">funciones</span></a>
+        <a href="#" class="nav-item" id="nav-btn-perfil"><span class="nav-icon">👤</span><span id="txt-nav-perfil">perfil</span></a>
+        <a href="#" class="nav-item" id="nav-btn-config"><span class="nav-icon">⚙️</span><span id="txt-nav-config">configuración</span></a>
+    </nav>
+
+    <script>
+        const navInicio = document.getElementById('nav-btn-inicio');
+        const navFunc = document.getElementById('nav-btn-func');
+        const navPerfil = document.getElementById('nav-btn-perfil');
+        const navConfig = document.getElementById('nav-btn-config');
+        const vistas = document.querySelectorAll('.vista');
+
+        navInicio.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('vista-inicio', navInicio); });
+        navFunc.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('vista-funciones', navFunc); });
+        navPerfil.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('vista-perfil', navPerfil); });
+        navConfig.addEventListener('click', (e) => { e.preventDefault(); cambiarVista('vista-configuracion', navConfig); });
+
+        function cambiarVista(idVista, elementoNav) {
+            vistas.forEach(v => v.style.display = 'none');
+            document.getElementById(idVista).style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('activo'));
+            if(elementoNav) elementoNav.classList.add('activo');
+        }
+
+        function abrirAgenda() { cambiarVista('vista-agenda', navFunc); }
+        function abrirNotas() { cambiarVista('vista-notas', navFunc); renderizarListaNotas(); }
+        function abrirCalendario() { cambiarVista('vista-calendario', navFunc); renderizarCalendario(); renderizarEventosCal(); }
+
+        function toggleModoOscuro() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.getElementById('btn-modo-oscuro');
+            btn.textContent = document.body.classList.contains('dark-mode') ? (idiomaActual === 'es' ? "Desactivar ☀️" : "Disable ☀️") : (idiomaActual === 'es' ? "Activar 🌙" : "Enable 🌙");
+        }
+
+        function cambiarFondoPantalla(claseFondo) {
+            document.body.classList.remove('bg-burbujas', 'bg-estrellitas', 'bg-matematicas', 'bg-corazones');
+            document.body.classList.add(claseFondo);
+        }
+
+        function subirFotoPropia(input) {
+            if (input.files && input.files[0]) {
+                const lector = new FileReader();
+                lector.onload = function(e) {
+                    const html = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    document.getElementById('avatar-preview').innerHTML = html;
+                    document.getElementById('header-avatar').innerHTML = html;
+                }
+                lector.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function actualizarPerfilInfo() {
+            const nom = document.getElementById('input-nombre-perfil').value;
+            const desc = document.getElementById('input-desc-perfil').value;
+            document.getElementById('header-nombre').textContent = nom || "ESTUDIANTE";
+            document.getElementById('header-desc').textContent = desc || "";
+        }
+
+        function editarPensamiento() {
+            const actual = document.getElementById('texto-pensamiento').textContent;
+            const nuevo = prompt(idiomaActual === 'es' ? "¿Qué estás pensando hoy?" : "What are you thinking today?", actual === "Toca para escribir lo que piensas..." ? "" : actual);
+            if (nuevo !== null) {
+                document.getElementById('texto-pensamiento').textContent = nuevo.trim() || (idiomaActual === 'es' ? "Toca para escribir lo que piensas..." : "Tap to write what you think...");
+            }
+        }
+
+        let idiomaActual = 'es';
+        function cambiarIdioma(lang) {
+            idiomaActual = lang;
+            if (lang === 'en') {
+                document.getElementById('txt-card-agenda').textContent = "TASK AGENDA";
+                document.getElementById('txt-card-agenda2').textContent = "TASK AGENDA";
+                document.getElementById('txt-card-notas').textContent = "NOTES & MEMOS";
+                document.getElementById('txt-card-notas2').textContent = "NOTES & MEMOS";
+                document.getElementById('txt-card-cal').textContent = "CALENDAR";
+                document.getElementById('txt-card-cal2').textContent = "CALENDAR";
+                document.getElementById('txt-bienvenida').textContent = "HELLO, GLAD TO SEE YOU";
+                document.getElementById('txt-title-agenda').textContent = "✏️ Advanced Task Agenda";
+                document.getElementById('txt-progreso-label').textContent = "Activity Progress";
+                document.getElementById('txt-nueva-tarea').textContent = "Register New Task";
+                document.getElementById('txt-adjuntar-img').textContent = "Attach Image:";
+                document.getElementById('txt-fecha-limite').textContent = "Due date:";
+                document.getElementById('btn-guardar-tarea').textContent = "Save Task to Agenda";
+                document.getElementById('txt-title-notas').textContent = "📝 Notes & Memos";
+                document.getElementById('btn-nueva-nota').textContent = "+ New Note";
+                document.getElementById('btn-volver-notas').textContent = "← Back to list";
+                document.getElementById('txt-title-cal').textContent = "📅 Advanced Calendar";
+                document.getElementById('btn-vista-mes').textContent = "Month";
+                document.getElementById('btn-vista-semana').textContent = "Week";
+                document.getElementById('txt-crear-evento').textContent = "➕ Create Event with Timer";
+                document.getElementById('txt-btn-guardar-ev').textContent = "Save Event & Timer";
+                document.getElementById('txt-lista-ev').textContent = "⏳ Events & Timers List";
+                document.getElementById('txt-title-config').textContent = "⚙️ System Configuration";
+                document.getElementById('txt-label-lang').textContent = "🌐 Language / Idioma";
+                document.getElementById('txt-label-dark').textContent = "🌙 Dark Mode";
+                document.getElementById('txt-label-fondos').textContent = "🎨 Background Library";
+                document.getElementById('txt-fon-mat').textContent = "Mathematics 📐";
+                document.getElementById('txt-about-title').textContent = "ℹ️ About StudyBox";
+                document.getElementById('txt-about-desc').innerHTML = "StudyBox version 1<br><br><b>Developers:</b><br>• EMILIANO NUÑEZ HERNÁNDEZ - PROGRAMMER<br>• ISABELLA JAZMIN JIMÉNEZ VILLALOBOS - DESIGNER<br>• KEVIN ALEJANDRO CABRERA ANTONIO - PROJECT COORDINATOR<br>• CARLOS PATRICIO SÁNCHEZ MARTINEZ - TESTER<br><br>🇲🇽 STUDYBOXBOX WAS MADE IN MEXICO ALTAMIRA TAMAULIPAS";
+                document.getElementById('txt-label-reset').textContent = "Factory Reset Data";
+                document.getElementById('txt-btn-borrar').textContent = "Clear";
+                document.getElementById('txt-nav-inicio').textContent = "home";
+                document.getElementById('txt-nav-func').textContent = "features";
+                document.getElementById('txt-nav-perfil').textContent = "profile";
+                document.getElementById('txt-nav-config').textContent = "settings";
+            } else {
+                document.getElementById('txt-card-agenda').textContent = "AGENDA DE TAREAS";
+                document.getElementById('txt-card-agenda2').textContent = "AGENDA DE TAREAS";
+                document.getElementById('txt-card-notas').textContent = "NOTA Y APUNTES";
+                document.getElementById('txt-card-notas2').textContent = "NOTA Y APUNTES";
+                document.getElementById('txt-card-cal').textContent = "CALENDARIO";
+                document.getElementById('txt-card-cal2').textContent = "CALENDARIO";
+                document.getElementById('txt-bienvenida').textContent = "HOLA QUE BUENO VERTE";
+                document.getElementById('txt-title-agenda').textContent = "✏️ Agenda de Tareas Avanzada";
+                document.getElementById('txt-progreso-label').textContent = "Progreso de Actividades";
+                document.getElementById('txt-nueva-tarea').textContent = "Registrar Nueva Tarea";
+                document.getElementById('txt-adjuntar-img').textContent = "Adjuntar Imagen:";
+                document.getElementById('txt-fecha-limite').textContent = "Fecha límite de entrega:";
+                document.getElementById('btn-guardar-tarea').textContent = "Guardar Tarea en Agenda";
+                document.getElementById('txt-title-notas').textContent = "📝 Nota y Apuntes";
+                document.getElementById('btn-nueva-nota').textContent = "+ Nueva Nota";
+                document.getElementById('btn-volver-notas').textContent = "← Volver a la lista";
+                document.getElementById('txt-title-cal').textContent = "📅 Calendario Avanzado";
+                document.getElementById('btn-vista-mes').textContent = "Mes";
+                document.getElementById('btn-vista-semana').textContent = "Semana";
+                document.getElementById('txt-crear-evento').textContent = "➕ Crear Evento con Temporizador";
+                document.getElementById('txt-btn-guardar-ev').textContent = "Guardar Evento y Temporizador";
+                document.getElementById('txt-lista-ev').textContent = "⏳ Lista de Eventos y Temporizadores";
+                document.getElementById('txt-title-config').textContent = "⚙️ Configuración del Sistema";
+                document.getElementById('txt-label-lang').textContent = "🌐 Idioma / Language";
+                document.getElementById('txt-label-dark').textContent = "🌙 Modo Oscuro";
+                document.getElementById('txt-label-fondos').textContent = "🎨 Biblioteca de Fondos";
+                document.getElementById('txt-fon-mat').textContent = "Matemáticas 📐";
+                document.getElementById('txt-about-title').textContent = "ℹ️ Acerca de StudyBox";
+                document.getElementById('txt-about-desc').innerHTML = "StudyBox versión 1<br><br><b>Desarrolladores:</b><br>• EMILIANO NUÑEZ HERNÁNDEZ - PROGRAMADOR<br>• ISABELLA JAZMIN JIMÉNEZ VILLALOBOS - DISEÑADORA<br>• KEVIN ALEJANDRO CABRERA ANTONIO - COORDINADOR DE PROYECTO<br>• CARLOS PATRICIO SÁNCHEZ MARTINEZ - TESTER<br><br>🇲🇽 STUDYBOXBOX FUE HECHO EN MÉXICO ALTAMIRA TAMAULIPAS";
+                document.getElementById('txt-label-reset').textContent = "Restablecer datos de fábrica";
+                document.getElementById('txt-btn-borrar').textContent = "Borrar";
+                document.getElementById('txt-nav-inicio').textContent = "inicio";
+                document.getElementById('txt-nav-func').textContent = "funciones";
+                document.getElementById('txt-nav-perfil').textContent = "perfil";
+                document.getElementById('txt-nav-config').textContent = "configuración";
+            }
+        }
+      let tareas = [];
+        const btnGuardarTarea = document.getElementById('btn-guardar-tarea');
+        const listaTareas = document.getElementById('lista-tareas');
+        const barraGlobal = document.getElementById('barra-progreso-global');
+        const textoPorcentajeGlobal = document.getElementById('texto-porcentaje-global');
+
+        function actualizarProgresoGlobal() {
+            const total = tareas.length;
+            if (total === 0) {
+                if (barraGlobal) barraGlobal.style.width = '0%';
+                if (textoPorcentajeGlobal) textoPorcentajeGlobal.textContent = '0% (0/0)';
+                return;
+            }
+            const completadas = tareas.filter(t => t.completada).length;
+            const porcentaje = Math.round((completadas / total) * 100);
+            if (barraGlobal) barraGlobal.style.width = porcentaje + '%';
+            if (textoPorcentajeGlobal) textoPorcentajeGlobal.textContent = `${porcentaje}% (${completadas}/${total})`;
+        }
+
+        function renderizarTareas() {
+            if (!listaTareas) return;
+            if (tareas.length === 0) {
+                listaTareas.innerHTML = `<p style="font-size: 12px; color: #9ca3af; text-align: center;">${idiomaActual === 'es' ? 'No hay tareas registradas.' : 'No tasks registered.'}</p>`;
+                actualizarProgresoGlobal();
+                return;
+            }
+            listaTareas.innerHTML = '';
+            tareas.forEach((tarea, index) => {
+                const tarjetaItem = document.createElement('div');
+                tarjetaItem.style.cssText = `background: var(--card-bg); border: 1px solid ${tarea.completada ? '#10b981' : 'var(--border-color)'}; border-radius: 12px; padding: 12px; margin-bottom: 10px; opacity: ${tarea.completada ? '0.75' : '1'};`;
+                
+                let imgHtml = tarea.imagen ? `<img src="${tarea.imagen}" onclick="abrirZoom('${tarea.imagen}')" style="max-width: 100%; max-height: 140px; border-radius: 8px; margin-top: 8px; display: block; cursor: zoom-in;" title="Click para hacer zoom">` : '';
+
+                tarjetaItem.innerHTML = `
+                    <h4 style="margin: 0 0 4px 0; font-size: 14px; text-decoration: ${tarea.completada ? 'line-through' : 'none'};">${tarea.titulo}</h4>
+                    <p style="margin: 0 0 6px 0; font-size: 12px; color: var(--subtext-color);">${tarea.desc}</p>
+                    ${imgHtml}
+                    <div style="font-size: 11px; color: var(--subtext-color); margin-top: 6px; margin-bottom: 8px;">📅 ${idiomaActual === 'es' ? 'Vence' : 'Due'}: <b>${tarea.fecha ? tarea.fecha.replace('T', ' ') : (idiomaActual === 'es' ? 'No especificada' : 'Not specified')}</b></div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                        <label style="cursor: pointer; color: #10b981; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="check-completada" data-index="${index}" ${tarea.completada ? 'checked' : ''} style="accent-color: #10b981; width: 14px; height: 14px;"> 
+                            ${tarea.completada ? (idiomaActual === 'es' ? 'Completada' : 'Completed') : (idiomaActual === 'es' ? 'Marcar hecha' : 'Mark done')}
+                        </label>
+                        <button class="btn-borrar-tarea" data-index="${index}" style="background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; font-weight: bold;">${idiomaActual === 'es' ? 'Eliminar' : 'Delete'}</button>
+                    </div>
+                `;
+                tarjetaItem.querySelector('.check-completada').addEventListener('change', (e) => {
+                    tareas[index].completada = e.target.checked;
+                    renderizarTareas();
+                });
+                tarjetaItem.querySelector('.btn-borrar-tarea').addEventListener('click', () => {
+                    tareas.splice(index, 1);
+                    renderizarTareas();
+                });
+                listaTareas.appendChild(tarjetaItem);
+            });
+            actualizarProgresoGlobal();
+        }
+
+        if (btnGuardarTarea) {
+            btnGuardarTarea.addEventListener('click', () => {
+                const titulo = document.getElementById('task-titulo').value.trim();
+                const desc = document.getElementById('task-desc').value.trim();
+                const fecha = document.getElementById('task-fecha').value;
+                const fileInput = document.getElementById('task-img-input');
+
+                if (titulo === '') {
+                    alert(idiomaActual === 'es' ? 'Por favor ingresa al menos el título de la tarea.' : 'Please enter at least the task title.');
+                    return;
+                }
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const lector = new FileReader();
+                    lector.onload = function(e) {
+                        tareas.push({ titulo, desc, fecha, imagen: e.target.result, completada: false });
+                        limpiarFormTarea();
+                    }
+                    lector.readAsDataURL(fileInput.files[0]);
+                } else {
+                    tareas.push({ titulo, desc, fecha, imagen: null, completada: false });
+                    limpiarFormTarea();
+                }
+            });
+        }
+
+        function limpiarFormTarea() {
+            document.getElementById('task-titulo').value = '';
+            document.getElementById('task-desc').value = '';
+            document.getElementById('task-fecha').value = '';
+            document.getElementById('task-img-input').value = '';
+            renderizarTareas();
+            alert(idiomaActual === 'es' ? '¡Tarea agregada con éxito!' : 'Task added successfully!');
+        }
+
+        function abrirZoom(src) {
+            document.getElementById('img-zoom-contenido').src = src;
+            document.getElementById('modal-zoom').style.display = 'flex';
+        }
+
+        function cerrarZoom() {
+            document.getElementById('modal-zoom').style.display = 'none';
+        }
+
+        let notas = [];
+        let notaActualId = null;
+        const btnNuevaNota = document.getElementById('btn-nueva-nota');
+        const btnVolverNotas = document.getElementById('btn-volver-notas');
+
+        if (btnNuevaNota) {
+            btnNuevaNota.addEventListener('click', () => {
+                const nueva = { id: Date.now(), titulo: idiomaActual === 'es' ? "Nota sin título" : "Untitled note", contenido: "", fecha: new Date().toLocaleString() };
+                notas.unshift(nueva);
+                abrirEditorNota(nueva.id);
+            });
+        }
+
+        if (btnVolverNotas) {
+            btnVolverNotas.addEventListener('click', () => {
+                guardarNotaActual();
+                document.getElementById('editor-nota-view').style.display = 'none';
+                document.getElementById('contenedor-lista-notas').style.display = 'block';
+                renderizarListaNotas();
+            });
+        }
+
+        function renderizarListaNotas() {
+            const listaDiv = document.getElementById('lista-notas');
+            document.getElementById('editor-nota-view').style.display = 'none';
+            document.getElementById('contenedor-lista-notas').style.display = 'block';
+            if (!listaDiv) return;
+            if (notas.length === 0) {
+                listaDiv.innerHTML = `<p style="font-size: 12px; color: #9ca3af; text-align: center;">${idiomaActual === 'es' ? 'No hay notas guardadas.' : 'No saved notes.'}</p>`;
+                return;
+            }
+            listaDiv.innerHTML = '';
+            notas.forEach((nota) => {
+                const item = document.createElement('div');
+                item.style.cssText = "background: rgba(148,163,184,0.1); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;";
+                item.innerHTML = `<div><h4 style="margin: 0 0 4px 0; font-size: 13px;">${nota.titulo}</h4><span style="font-size: 10px; color: #9ca3af;">${idiomaActual === 'es' ? 'Actualizada' : 'Updated'}: ${nota.fecha}</span></div><button class="btn-borrar-nota" style="background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold;">${idiomaActual === 'es' ? 'Borrar' : 'Delete'}</button>`;
+                item.addEventListener('click', (e) => { if (!e.target.classList.contains('btn-borrar-nota')) abrirEditorNota(nota.id); });
+                item.querySelector('.btn-borrar-nota').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notas = notas.filter(n => n.id !== nota.id);
+                    renderizarListaNotas();
+                });
+                listaDiv.appendChild(item);
+            });
+        }
+
+  function abrirEditorNota(id) {
+            notaActualId = id;
+            const nota = notas.find(n => n.id === id);
+            if (!nota) return;
+            document.getElementById('nota-input-titulo').value = nota.titulo;
+            document.getElementById('nota-contenido').innerHTML = nota.contenido;
+            document.getElementById('nota-fecha-info').textContent = `${idiomaActual === 'es' ? 'Creada / Modificada' : 'Created / Updated'}: ${nota.fecha}`;
+            document.getElementById('contenedor-lista-notas').style.display = 'none';
+            document.getElementById('editor-nota-view').style.display = 'block';
+        }
+
+        function guardarNotaActual() {
+            if (!notaActualId) return;
+            const nota = notas.find(n => n.id === notaActualId);
+            if (nota) {
+                nota.titulo = document.getElementById('nota-input-titulo').value.trim() || (idiomaActual === 'es' ? "Sin título" : "Untitled");
+                nota.contenido = document.getElementById('nota-contenido').innerHTML;
+                nota.fecha = new Date().toLocaleString();
+            }
+        }
+
+        const inputTituloNota = document.getElementById('nota-input-titulo');
+        const contenidoNotaDiv = document.getElementById('nota-contenido');
+        if (inputTituloNota) inputTituloNota.addEventListener('input', guardarNotaActual);
+        if (contenidoNotaDiv) contenidoNotaDiv.addEventListener('input', guardarNotaActual);
+
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            document.getElementById('nota-contenido').focus();
+        }
+
+        function insertarImagenNota(input) {
+            if (input.files && input.files[0]) {
+                const lector = new FileReader();
+                lector.onload = function(e) {
+                    const imgHtml = `<br><img src="${e.target.result}" style="max-width: 100%; border-radius: 8px; margin: 8px 0;"><br>`;
+                    document.execCommand('insertHTML', false, imgHtml);
+                    guardarNotaActual();
+                }
+                lector.readAsDataURL(input.files[0]);
+            }
+        }
+
+        let fechaActualCal = new Date();
+        let eventosCalendario = [];
+        let vistaCalendarioActual = 'mes';
+        let diaSeleccionadoStr = null;
+
+        function seleccionarColorPastel(colorHex, elemento) {
+            document.getElementById('evento-color').value = colorHex;
+            document.querySelectorAll('.circulo-pastel').forEach(c => c.classList.remove('seleccionado'));
+            elemento.classList.add('seleccionado');
+        }
+
+        function cambiarVistaCal(vista) {
+            vistaCalendarioActual = vista;
+            const btnMes = document.getElementById('btn-vista-mes');
+            const btnSem = document.getElementById('btn-vista-semana');
+            if (vista === 'mes') {
+                btnMes.style.background = '#3b82f6'; btnMes.style.color = 'white';
+                btnSem.style.background = 'rgba(148,163,184,0.2)'; btnSem.style.color = 'var(--text-color)';
+            } else {
+                btnSem.style.background = '#3b82f6'; btnSem.style.color = 'white';
+                btnMes.style.background = 'rgba(148,163,184,0.2)'; btnMes.style.color = 'var(--text-color)';
+            }
+            renderizarCalendario();
+        }
+
+        function navegarMesClick(dir) {
+            fechaActualCal.setMonth(fechaActualCal.getMonth() + dir);
+            document.getElementById('select-mes').value = fechaActualCal.getMonth();
+            document.getElementById('select-anio').value = fechaActualCal.getFullYear();
+            renderizarCalendario();
+        }
+
+        function actualizarCalendarioSelect() {
+            const m = parseInt(document.getElementById('select-mes').value);
+            const a = parseInt(document.getElementById('select-anio').value);
+            fechaActualCal.setFullYear(a, m, 1);
+            renderizarCalendario();
+        }
+
+        function renderizarCalendario() {
+            const grid = document.getElementById('dias-calendario-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            document.getElementById('select-mes').value = fechaActualCal.getMonth();
+            document.getElementById('select-anio').value = fechaActualCal.getFullYear();
+
+            const anio = fechaActualCal.getFullYear();
+            const mes = fechaActualCal.getMonth();
+
+            if (vistaCalendarioActual === 'mes') {
+                const primerDiaIndex = new Date(anio, mes, 1).getDay();
+                const ajusteLunes = primerDiaIndex === 0 ? 6 : primerDiaIndex - 1;
+                const totalDiasMes = new Date(anio, mes + 1, 0).getDate();
+
+                for (let i = 0; i < ajusteLunes; i++) grid.appendChild(document.createElement('div'));
+
+                for (let dia = 1; dia <= totalDiasMes; dia++) {
+                    const celda = document.createElement('div');
+                    const fechaStr = `${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+                    celda.className = 'dia-calendario';
+                    celda.textContent = dia;
+
+                    if (fechaStr === diaSeleccionadoStr) {
+                        celda.classList.add('dia-seleccionado');
+                    }
+
+                    const ev = eventosCalendario.find(e => e.fecha === fechaStr);
+                    if (ev && fechaStr !== diaSeleccionadoStr) {
+                        celda.style.background = ev.color || '#fbcfe8';
+                        celda.style.color = '#1f2937';
+                        celda.style.fontWeight = 'bold';
+                    }
+
+                    celda.addEventListener('click', () => {
+                        diaSeleccionadoStr = fechaStr;
+                        document.getElementById('evento-fecha').value = fechaStr;
+                        renderizarCalendario();
+                    });
+                    grid.appendChild(celda);
+                }
+            } else {
+                const currDate = new Date(fechaActualCal);
+                const firstDayOfWeek = currDate.getDate() - currDate.getDay() + 1;
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(currDate.setDate(firstDayOfWeek + i));
+                    const anioS = d.getFullYear();
+                    const mesS = d.getMonth() + 1;
+                    const diaS = d.getDate();
+                    const fechaStr = `${anioS}-${String(mesS).padStart(2, '0')}-${String(diaS).padStart(2, '0')}`;
+                    
+                    const celda = document.createElement('div');
+                    celda.className = 'dia-calendario';
+                    celda.textContent = `${d.getDate()}/${mesS}`;
+                    if (fechaStr === diaSeleccionadoStr) celda.classList.add('dia-seleccionado');
+
+                    celda.addEventListener('click', () => {
+                        diaSeleccionadoStr = fechaStr;
+                        document.getElementById('evento-fecha').value = fechaStr;
+                        renderizarCalendario();
+                    });
+                    grid.appendChild(celda);
+                }
+            }
+        }
+
+        function guardarEventoCal() {
+            const titulo = document.getElementById('evento-titulo').value.trim();
+            const fecha = document.getElementById('evento-fecha').value;
+            const color = document.getElementById('evento-color').value;
+
+            if (!titulo || !fecha) {
+                alert(idiomaActual === 'es' ? 'Ingresa el título y selecciona una fecha.' : 'Enter title and select a date.');
+                return;
+            }
+            eventosCalendario.push({ titulo, fecha, color });
+            document.getElementById('evento-titulo').value = '';
+            renderizarCalendario();
+            renderizarEventosCal();
+            alert(idiomaActual === 'es' ? '¡Evento y temporizador creados!' : 'Event and timer created!');
+        }
+
+        function calcularTiempoRestante(fechaMeta) {
+            const ahora = new Date();
+            const meta = new Date(fechaMeta + 'T00:00:00');
+            const diferenciaMs = meta - ahora;
+            if (diferenciaMs <= 0) return idiomaActual === 'es' ? "¡El evento ha llegado o ya pasó!" : "Event has arrived or passed!";
+
+            const diasTotales = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+            const anos = Math.floor(diasTotales / 365);
+            const meses = Math.floor((diasTotales % 365) / 30);
+            const semanas = Math.floor(((diasTotales % 365) % 30) / 7);
+            const dias = Math.floor(((diasTotales % 365) % 30) % 7);
+
+            let res = [];
+            if (anos > 0) res.push(`${anos} ${anos > 1 ? (idiomaActual==='es'?'años':'years') : (idiomaActual==='es'?'año':'year')}`);
+            if (meses > 0) res.push(`${meses} ${idiomaActual==='es'?'mes(es)':'month(s)'}`);
+            if (semanas > 0) res.push(`${semanas} ${idiomaActual==='es'?'sem(s)':'week(s)'}`);
+            if (dias > 0 || res.length === 0) res.push(`${dias} ${dias > 1 ? (idiomaActual==='es'?'días':'days') : (idiomaActual==='es'?'día':'day')}`);
+            return (idiomaActual === 'es' ? "Faltan: " : "Remaining: ") + res.join(', ');
+        }
+
+        function renderizarEventosCal() {
+            const lista = document.getElementById('lista-eventos-cal');
+            if (!lista) return;
+            if (eventosCalendario.length === 0) {
+                lista.innerHTML = `<p style="font-size: 11px; color: #9ca3af; text-align: center;">${idiomaActual === 'es' ? 'No hay eventos registrados.' : 'No registered events.'}</p>`;
+                return;
+            }
+            lista.innerHTML = '';
+            eventosCalendario.forEach((ev, index) => {
+                const item = document.createElement('div');
+                item.style.cssText = `background: ${ev.color || '#fbcfe8'}; border-radius: 8px; padding: 10px; color: #1f2937; display: flex; justify-content: space-between; align-items: center; font-size: 11px;`;
+                item.innerHTML = `<div><b>${ev.titulo}</b> (${ev.fecha})<br><span style="color:#1d4ed8; font-weight:bold;">${calcularTiempoRestante(ev.fecha)}</span></div><button onclick="borrarEventoCal(${index})" style="background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; font-weight: bold;">${idiomaActual === 'es' ? 'Borrar' : 'Delete'}</button>`;
+                lista.appendChild(item);
+            });
+        }
+
+        function borrarEventoCal(index) {
+            eventosCalendario.splice(index, 1);
+            renderizarCalendario();
+            renderizarEventosCal();
+        }
+    </script>
+</body>
+</html>
