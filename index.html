@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBox - Portal Estudiantil Avanzado</title>
+    <title>StudyBox - Portal Estudiantil Definitivo v2.0</title>
     <style>
         :root {
             --bg-color: #e2e8f0;
@@ -59,10 +59,9 @@
         }
         body.dark-mode.bg-corazones { background-color: #310413; background-image: radial-gradient(circle at 25% 25%, #db2777 6px, transparent 7px); background-size: 100px 100px; }
 
-        /* Barra superior XP y Cofre */
         .top-reward-bar { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); font-size: 12px; font-weight: bold; }
         body.dark-mode .top-reward-bar { background: rgba(30, 41, 59, 0.9); }
-        .btn-cofre { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-cofre { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         .header-perfil { background: var(--header-grad); padding: 18px 22px; display: flex; align-items: center; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .header-perfil .avatar { width: 55px; height: 55px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-right: 15px; overflow: hidden; border: 2px solid rgba(255,255,255,0.5); }
@@ -94,110 +93,117 @@
 
         .tarjeta-seccion { background: var(--card-bg); color: var(--text-color); border-radius: 18px; padding: 22px; margin: 15px; border: 1px solid var(--border-color); text-align: center; }
         
-        .dia-calendario { padding: 10px 2px; font-size: 12px; border-radius: 8px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); cursor: pointer; text-align: center; font-weight: 600; }
-        .dia-calendario.dia-hoy {
-            background-color: #cbd5e1 !important;
-            color: #0f172a !important;
-            font-weight: 800 !important;
-            border: 2px solid #94a3b8 !important;
-            cursor: default !important;
-        }
-        body.dark-mode .dia-calendario.dia-hoy {
-            background-color: #334155 !important;
-            color: #f8fafc !important;
-            border-color: #64748b !important;
-        }
+        .dia-calendario { padding: 10px 2px; font-size: 12px; border-radius: 8px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); cursor: pointer; text-align: center; font-weight: 600; min-height: 35px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .dia-calendario.dia-hoy { border: 2px solid #3b82f6 !important; font-weight: 800; }
 
-        .biblioteca-fondos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .opcion-fondo { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 14px; padding: 12px; text-align: center; cursor: pointer; }
-        .preview-mini { height: 45px; border-radius: 8px; margin-bottom: 6px; }
+        .toolbar-notas { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; background: rgba(148,163,184,0.1); padding: 8px; border-radius: 8px; align-items: center; }
+        .toolbar-notas button, .toolbar-notas label { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; }
     </style>
 </head>
 <body class="bg-burbujas">
     <div class="top-reward-bar">
         <span>⚡ XP: <strong id="txt-xp-total">0</strong> | 🍖 Croquetas: <strong id="txt-croquetas-total">0</strong></span>
-        <button class="btn-cofre" onclick="reclamarCofreDiario()">🎁 Cofre Diario</button>
+        <button class="btn-cofre" onclick="reclamarCofreDiario()" data-i18n="cofre">🎁 Cofre Diario</button>
     </div>
 
     <header class="header-perfil">
         <div class="avatar" id="header-avatar">👤</div>
         <div>
-            <h1 id="header-nombre">Emiliano</h1>
-            <p id="header-desc" style="color: rgba(255,255,255,0.8); font-size: 11px; margin: 2px 0 0 0;">Estudiante</p>
+            <h1 id="header-nombre">ESTUDIANTE</h1>
+            <p id="header-desc" style="color: rgba(255,255,255,0.8); font-size: 11px; margin: 2px 0 0 0;">Cbtis 105 - Programación</p>
         </div>
     </header>
 
     <section id="vista-inicio" class="vista">
-        <div class="tarjeta-frase">
-            <p id="frase-texto">"El éxito es la suma de pequeños esfuerzos repetidos día tras día."</p>
-        </div>
+        <div class="tarjeta-frase"><p id="frase-texto">"El éxito es la suma de pequeños esfuerzos repetidos día tras día."</p></div>
         <main class="grid-tarjetas">
-            <div class="tarjeta tarjeta-azul" onclick="abrirAgenda()"><span class="icono-tarjeta">✏️</span><h3 id="txt-card-agenda">AGENDA DE TAREAS</h3></div>
-            <div class="tarjeta tarjeta-verde" onclick="abrirNotas()"><span class="icono-tarjeta">📝</span><h3 id="txt-card-notas">NOTA Y APUNTES</h3></div>
-            <div class="tarjeta tarjeta-rosa" onclick="abrirCalendario()"><span class="icono-tarjeta">📅</span><h3 id="txt-card-cal">CALENDARIO</h3></div>
-            <div class="tarjeta tarjeta-morada" onclick="abrirCalculadora()"><span class="icono-tarjeta">🧮</span><h3 id="txt-card-calc">CALCULADORA</h3></div>
-            <div class="tarjeta tarjeta-naranja" onclick="abrirRuleta()"><span class="icono-tarjeta">🎡</span><h3 id="txt-card-ruleta">RULETA DE AZAR</h3></div>
-            <div class="tarjeta tarjeta-roja" onclick="abrirTemporizador()"><span class="icono-tarjeta">⏳</span><h3 id="txt-card-timer">TEMPORIZADOR</h3></div>
+            <div class="tarjeta tarjeta-azul" onclick="abrirAgenda()"><span class="icono-tarjeta">✏️</span><h3 data-i18n="menu_agenda">AGENDA DE TAREAS</h3></div>
+            <div class="tarjeta tarjeta-verde" onclick="abrirNotas()"><span class="icono-tarjeta">📝</span><h3 data-i18n="menu_notas">NOTA Y APUNTES</h3></div>
+            <div class="tarjeta tarjeta-rosa" onclick="abrirCalendario()"><span class="icono-tarjeta">📅</span><h3 data-i18n="menu_cal">CALENDARIO</h3></div>
+            <div class="tarjeta tarjeta-morada" onclick="abrirCalculadora()"><span class="icono-tarjeta">🧮</span><h3 data-i18n="menu_calc">CALCULADORA</h3></div>
+            <div class="tarjeta tarjeta-naranja" onclick="abrirRuleta()"><span class="icono-tarjeta">🎡</span><h3 data-i18n="menu_ruleta">RULETA DE AZAR</h3></div>
+            <div class="tarjeta tarjeta-roja" onclick="abrirTemporizador()"><span class="icono-tarjeta">⏳</span><h3 data-i18n="menu_timer">TEMPORIZADOR</h3></div>
         </main>
         <div class="seccion-bienvenida">
             <div class="logo-sb">SB</div>
-            <div class="texto-bienvenida"><h2 id="txt-bienvenida" style="font-size: 16px; margin: 0;">HOLA QUE BUENO VERTE</h2></div>
+            <div class="texto-bienvenida"><h2 style="font-size: 16px; margin: 0;" data-i18n="bienvenida_msg">HOLA QUE BUENO VERTE</h2></div>
         </div>
     </section>
 
     <section id="vista-funciones" class="vista" style="display: none;">
         <main class="grid-tarjetas" style="margin-top: 15px;">
-            <div class="tarjeta tarjeta-azul" onclick="abrirAgenda()"><span class="icono-tarjeta">✏️</span><h3>AGENDA DE TAREAS</h3></div>
-            <div class="tarjeta tarjeta-verde" onclick="abrirNotas()"><span class="icono-tarjeta">📝</span><h3>NOTA Y APUNTES</h3></div>
-            <div class="tarjeta tarjeta-rosa" onclick="abrirCalendario()"><span class="icono-tarjeta">📅</span><h3>CALENDARIO</h3></div>
-            <div class="tarjeta tarjeta-morada" onclick="abrirCalculadora()"><span class="icono-tarjeta">🧮</span><h3>CALCULADORA</h3></div>
-            <div class="tarjeta tarjeta-naranja" onclick="abrirRuleta()"><span class="icono-tarjeta">🎡</span><h3>RULETA DE AZAR</h3></div>
-            <div class="tarjeta tarjeta-roja" onclick="abrirTemporizador()"><span class="icono-tarjeta">⏳</span><h3>TEMPORIZADOR</h3></div>
+            <div class="tarjeta tarjeta-azul" onclick="abrirAgenda()"><span class="icono-tarjeta">✏️</span><h3 data-i18n="menu_agenda">AGENDA DE TAREAS</h3></div>
+            <div class="tarjeta tarjeta-verde" onclick="abrirNotas()"><span class="icono-tarjeta">📝</span><h3 data-i18n="menu_notas">NOTA Y APUNTES</h3></div>
+            <div class="tarjeta tarjeta-rosa" onclick="abrirCalendario()"><span class="icono-tarjeta">📅</span><h3 data-i18n="menu_cal">CALENDARIO</h3></div>
+            <div class="tarjeta tarjeta-morada" onclick="abrirCalculadora()"><span class="icono-tarjeta">🧮</span><h3 data-i18n="menu_calc">CALCULADORA</h3></div>
+            <div class="tarjeta tarjeta-naranja" onclick="abrirRuleta()"><span class="icono-tarjeta">🎡</span><h3 data-i18n="menu_ruleta">RULETA DE AZAR</h3></div>
+            <div class="tarjeta tarjeta-roja" onclick="abrirTemporizador()"><span class="icono-tarjeta">⏳</span><h3 data-i18n="menu_timer">TEMPORIZADOR</h3></div>
         </main>
     </section>
 
+    <!-- AGENDA -->
     <section id="vista-agenda" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
-            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">✏️ Agenda de Tareas Avanzada</h3>
+            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" data-i18n="menu_agenda">✏️ Agenda de Tareas</h3>
+            
             <div style="margin: 15px 0; background: rgba(148,163,184,0.1); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color);">
                 <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 6px;">
-                    <span>Progreso de Actividades</span>
+                    <span data-i18n="progreso_act">Progreso de Actividades</span>
                     <span id="texto-porcentaje-global">0% (0/0)</span>
                 </div>
                 <div style="background: rgba(148,163,184,0.3); border-radius: 8px; height: 12px; overflow: hidden;">
-                    <div id="barra-progreso-global" style="background: #10b981; width: 0%; height: 100%;"></div>
+                    <div id="barra-progreso-global" style="background: #10b981; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
                 </div>
             </div>
+
             <div style="background: rgba(148,163,184,0.08); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color);">
-                <h4 style="margin: 0 0 10px 0; font-size: 13px;">Registrar Nueva Tarea</h4>
+                <h4 style="margin: 0 0 10px 0; font-size: 13px;" data-i18n="reg_tarea">Registrar Nueva Tarea</h4>
                 <input type="text" id="task-titulo" placeholder="Título de la tarea..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
                 <textarea id="task-desc" placeholder="Detalles o notas de la tarea..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; height: 60px; background: var(--card-bg); color: var(--text-color); resize: none;"></textarea>
-                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;">Fecha límite de entrega:</label>
-                <input type="datetime-local" id="task-fecha" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
-                <button id="btn-guardar-tarea" style="width: 100%; background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px;">Guardar Tarea en Agenda</button>
+                
+                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;" data-i18n="adj_img">Adjuntar Imagen:</label>
+                <input type="file" id="task-img-input" accept="image/*" style="width: 100%; margin-bottom: 10px; font-size: 11px;">
+
+                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;" data-i18n="fecha_limite">Fecha límite de entrega:</label>
+                <input type="date" id="task-fecha" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                <button id="btn-guardar-tarea" style="width: 100%; background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px;" data-i18n="btn_guardar_tarea">Guardar Tarea en Agenda</button>
             </div>
-            <div id="lista-tareas" style="margin-top: 20px;"><p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay tareas registradas.</p></div>
+            <div id="lista-tareas" style="margin-top: 20px;"><p style="font-size: 12px; color: #9ca3af; text-align: center;" data-i18n="no_tareas">No hay tareas registradas.</p></div>
         </div>
     </section>
 
+    <!-- BLOG DE NOTAS -->
     <section id="vista-notas" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">
-                <h3 style="margin: 0; font-size: 16px;">📝 Nota y Apuntes</h3>
-                <button id="btn-nueva-nota" style="background: #10b981; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 11px; cursor: pointer;">+ Nueva Nota</button>
+                <h3 style="margin: 0; font-size: 16px;" data-i18n="menu_notas">📝 Nota y Apuntes</h3>
+                <button id="btn-nueva-nota" style="background: #10b981; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 11px; cursor: pointer;" data-i18n="btn_nueva_nota">+ Nueva Nota</button>
             </div>
-            <div id="contenedor-lista-notas"><div id="lista-notas"><p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay notas guardadas.</p></div></div>
+            <div id="contenedor-lista-notas"><div id="lista-notas"><p style="font-size: 12px; color: #9ca3af; text-align: center;" data-i18n="no_notas">No hay notas guardadas.</p></div></div>
             <div id="editor-nota-view" style="display: none;">
-                <button id="btn-volver-notas" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; margin-bottom: 12px;">← Volver a la lista</button>
+                <button id="btn-volver-notas" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; margin-bottom: 12px;" data-i18n="volver">← Volver a la lista</button>
                 <input type="text" id="nota-input-titulo" placeholder="Título de la nota..." style="width: 100%; box-sizing: border-box; padding: 10px; font-size: 14px; font-weight: bold; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 10px; background: var(--card-bg); color: var(--text-color);">
+                
+                <div class="toolbar-notas">
+                    <button onclick="document.execCommand('bold', false, null)"><b>B</b></button>
+                    <button onclick="document.execCommand('italic', false, null)"><i>I</i></button>
+                    <button onclick="document.execCommand('insertUnorderedList', false, null)">📋</button>
+                    <button onclick="document.execCommand('justifyLeft', false, null)">⬅️</button>
+                    <button onclick="document.execCommand('justifyCenter', false, null)">⊙</button>
+                    <button onclick="document.execCommand('justifyRight', false, null)">➡️</button>
+                    <label>🖼️<input type="file" accept="image/*" style="display: none;" onchange="insertarImagenEnNota(this)"></label>
+                </div>
+
                 <div id="nota-contenido" contenteditable="true" style="width: 100%; min-height: 200px; box-sizing: border-box; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg); color: var(--text-color); outline: none; overflow-y: auto;"></div>
+                <p id="nota-fecha-info" style="font-size: 10px; color: var(--subtext-color); margin-top: 8px;"></p>
             </div>
         </div>
     </section>
 
+ <!-- CALENDARIO -->
     <section id="vista-calendario" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
-            <h3 style="margin: 0 0 15px 0; font-size: 16px;">📅 Calendario Avanzado</h3>
+            <h3 style="margin: 0 0 10px 0; font-size: 16px;" data-i18n="menu_cal">📅 Calendario Avanzado</h3>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 6px;">
                 <button onclick="navegarMesClick(-1)" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; font-weight: bold; cursor: pointer;">◀</button>
                 <select id="select-mes" onchange="actualizarCalendarioSelect()" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; background: var(--card-bg); color: var(--text-color);">
@@ -208,19 +214,40 @@
                 </select>
                 <button onclick="navegarMesClick(1)" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; font-weight: bold; cursor: pointer;">▶</button>
             </div>
+
             <div style="background: rgba(148,163,184,0.08); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 15px;">
                 <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 10px; font-weight: bold; color: #6b7280; margin-bottom: 6px;">
                     <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
                 </div>
                 <div id="dias-calendario-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;"></div>
             </div>
+
+            <div style="background: rgba(148,163,184,0.08); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color);">
+                <h4 style="margin: 0 0 8px 0; font-size: 13px;" data-i18n="crear_evento">➕ Crear Evento con Temporizador</h4>
+                <input type="text" id="cal-evento-nombre" placeholder="Nombre del evento o meta..." style="width: 100%; box-sizing: border-box; padding: 9px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                <input type="date" id="cal-evento-fecha" style="width: 100%; box-sizing: border-box; padding: 9px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
+                
+                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 6px;" data-i18n="sel_color">🎨 Selecciona un Color Pastel:</label>
+                <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
+                    <div onclick="seleccionarColorPastel('#fbcfe8')" style="width: 24px; height: 24px; border-radius: 50%; background: #fbcfe8; cursor: pointer; border: 2px solid #fff;"></div>
+                    <div onclick="seleccionarColorPastel('#bae6fd')" style="width: 24px; height: 24px; border-radius: 50%; background: #bae6fd; cursor: pointer; border: 2px solid #fff;"></div>
+                    <div onclick="seleccionarColorPastel('#a7f3d0')" style="width: 24px; height: 24px; border-radius: 50%; background: #a7f3d0; cursor: pointer; border: 2px solid #fff;"></div>
+                    <div onclick="seleccionarColorPastel('#ddd6fe')" style="width: 24px; height: 24px; border-radius: 50%; background: #ddd6fe; cursor: pointer; border: 2px solid #fff;"></div>
+                    <div onclick="seleccionarColorPastel('#fef08a')" style="width: 24px; height: 24px; border-radius: 50%; background: #fef08a; cursor: pointer; border: 2px solid #fff;"></div>
+                    <div onclick="seleccionarColorPastel('#fed7aa')" style="width: 24px; height: 24px; border-radius: 50%; background: #fed7aa; cursor: pointer; border: 2px solid #fff;"></div>
+                </div>
+                <button onclick="guardarEventoCalendario()" style="width: 100%; background: #ec4899; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer;" data-i18n="btn_guardar_evento">Guardar Evento y Calcular Días</button>
+                <div id="lista-eventos-cal" style="margin-top: 12px;"></div>
+            </div>
         </div>
     </section>
+
+    <!-- CALCULADORA -->
     <section id="vista-calculadora" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">
-                <h3 style="margin: 0; font-size: 16px;">🧮 Calculadora Tradicional</h3>
-                <button onclick="mostrarVista('funciones')" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;">← Volver</button>
+                <h3 style="margin: 0; font-size: 16px;" data-i18n="menu_calc">🧮 Calculadora Tradicional</h3>
+                <button onclick="mostrarVista('funciones')" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;" data-i18n="volver">← Volver</button>
             </div>
             <div class="calc-container" style="background: rgba(148, 163, 184, 0.06); border-radius: 16px; padding: 14px; border: 1px solid var(--border-color);">
                 <div class="calc-display" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px; text-align: right; margin-bottom: 12px; min-height: 70px;">
@@ -251,159 +278,278 @@
                 </div>
                 <div style="margin-top: 18px; border-top: 1px solid var(--border-color); padding-top: 12px; text-align: left;">
                     <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; margin-bottom: 8px;">
-                        <span>🕒 Historial de cálculos</span>
-                        <button onclick="borrarHistorialCalc()" style="background: transparent; border: none; color: #ef4444; font-size: 11px; cursor: pointer; text-decoration: underline;">Borrar todo</button>
+                        <span data-i18n="hist_calc">🕒 Historial de cálculos</span>
+                        <button onclick="borrarHistorialCalc()" style="background: transparent; border: none; color: #ef4444; font-size: 11px; cursor: pointer; text-decoration: underline;" data-i18n="borrar_todo">Borrar todo</button>
                     </div>
-                    <ul id="lista-historial-calc" style="list-style: none; padding: 0; margin: 0; max-height: 170px; overflow-y: auto;">
-                        <li style="text-align: center; font-size: 11px; color: var(--subtext-color); padding: 8px 0;">Aún no hay operaciones guardadas.</li>
-                    </ul>
+                    <ul id="lista-historial-calc" style="list-style: none; padding: 0; margin: 0; max-height: 170px; overflow-y: auto;"></ul>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- RULETA -->
     <section id="vista-ruleta" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 12px;">
-                <h3 style="margin: 0; font-size: 16px;">🎡 Ruleta de Decisiones</h3>
-                <button onclick="mostrarVista('funciones')" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;">← Volver</button>
+                <h3 style="margin: 0; font-size: 16px;" data-i18n="menu_ruleta">🎡 Ruleta de Decisiones</h3>
+                <button onclick="mostrarVista('funciones')" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;" data-i18n="volver">← Volver</button>
             </div>
             <div style="display: flex; gap: 8px; margin-bottom: 10px;">
                 <select id="select-ruleta-guardada" onchange="cargarRuletaSeleccionada()" style="flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; background: var(--card-bg); color: var(--text-color);"></select>
-                <button onclick="guardarRuletaActual()" style="background: #10b981; color: white; border: none; padding: 0 12px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer;">💾 Guardar</button>
-                <button onclick="nuevaRuleta()" style="background: #3b82f6; color: white; border: none; padding: 0 10px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer;">+ Nueva</button>
+                <button onclick="guardarRuletaActual()" style="background: #10b981; color: white; border: none; padding: 0 12px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer;" data-i18n="guardar">💾 Guardar</button>
+                <button onclick="nuevaRuleta()" style="background: #3b82f6; color: white; border: none; padding: 0 10px; border-radius: 8px; font-weight: bold; font-size: 11px; cursor: pointer;" data-i18n="nueva">+ Nueva</button>
             </div>
             <input type="text" id="ruleta-titulo-input" oninput="guardarTituloRuleta()" placeholder="Título de la ruleta..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 13px; font-weight: bold; text-align: center; background: var(--card-bg); color: var(--text-color);">
             <div style="position: relative; width: 260px; height: 260px; margin: 15px auto; display: flex; align-items: center; justify-content: center;">
                 <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 24px solid #ef4444; z-index: 10;"></div>
                 <canvas id="canvas-ruleta" width="260" height="260" style="width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 4px solid var(--card-bg);"></canvas>
-                <button onclick="girarRuleta()" style="position: absolute; width: 64px; height: 64px; border-radius: 50%; background: #ffffff; color: #1f2937; font-weight: 800; font-size: 13px; border: 4px solid #6366f1; cursor: pointer; z-index: 5;">GIRAR</button>
+                <button onclick="girarRuleta()" style="position: absolute; width: 64px; height: 64px; border-radius: 50%; background: #ffffff; color: #1f2937; font-weight: 800; font-size: 13px; border: 4px solid #6366f1; cursor: pointer; z-index: 5;" data-i18n="girar">GIRAR</button>
             </div>
             <div id="ruleta-ganador-box" style="display: none; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 14px; border-radius: 12px; text-align: center; margin-bottom: 15px; font-weight: bold; font-size: 15px;"></div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(148,163,184,0.08); padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 12px;">
-                <span style="font-size: 12px; font-weight: bold;">⚖️ Todos iguales (Equitativo)</span>
-                <input type="checkbox" id="check-todos-iguales" onchange="toggleTodosIguales()" style="width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer;">
-            </div>
             <div style="background: rgba(148,163,184,0.08); padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); margin-bottom: 15px;">
-                <h4 style="margin: 0 0 8px 0; font-size: 13px;">Añadir Nueva Pieza</h4>
+                <h4 style="margin: 0 0 8px 0; font-size: 13px;" data-i18n="add_pieza">Añadir Nueva Pieza</h4>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
                     <input type="text" id="nueva-pieza-texto" placeholder="Nombre de la opción..." style="flex: 1; padding: 9px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; background: var(--card-bg); color: var(--text-color);">
-                    <button onclick="agregarPiezaRuleta()" style="background: #6366f1; color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer;">+ Añadir</button>
+                    <button onclick="agregarPiezaRuleta()" style="background: #6366f1; color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer;" data-i18n="add_btn">+ Añadir</button>
                 </div>
-                <div style="font-size: 11px; font-weight: bold; margin-bottom: 4px;">Paleta de colores:</div>
                 <div id="paleta-ruleta" style="display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; justify-content: center;"></div>
             </div>
-            <h4 style="margin: 0 0 8px 0; font-size: 13px;">Piezas, Nombres y Pesos</h4>
             <div id="lista-piezas-ruleta"></div>
         </div>
     </section>
 
+    <!-- TEMPORIZADOR -->
     <section id="vista-temporizador" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="padding: 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">
-                <h3 style="margin: 0; font-size: 16px;">⏳ Temporizador de Concentración</h3>
-                <button onclick="mostrarVista('funciones')" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;">← Volver</button>
+                <h3 style="margin: 0; font-size: 16px;" data-i18n="menu_timer">⏳ Temporizador de Concentración</h3>
+                <button onclick="mostrarVista('funciones')" style="background: rgba(148,163,184,0.2); color: var(--text-color); border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;" data-i18n="volver">← Volver</button>
             </div>
             <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 10px;">
-                <div>
-                    <label style="font-size: 10px; font-weight: bold; display: block;">Minutos</label>
-                    <input type="number" id="timer-min-input" min="1" max="180" value="25" style="width: 60px; padding: 6px; text-align: center; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; background: var(--card-bg); color: var(--text-color);">
-                </div>
+                <div><label style="font-size: 10px; font-weight: bold; display: block;" data-i18n="minutos">Minutos</label><input type="number" id="timer-min-input" min="1" max="180" value="25" style="width: 60px; padding: 6px; text-align: center; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; background: var(--card-bg); color: var(--text-color);"></div>
             </div>
             <div id="timer-display-text" style="font-size: 48px; font-weight: 800; text-align: center; margin: 20px 0; color: #6366f1; font-family: monospace;">25:00</div>
             <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-                <button onclick="iniciarTemporizador()" style="padding: 10px 20px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; color: white; background: #10b981;">Iniciar</button>
-                <button onclick="pausarTemporizador()" style="padding: 10px 20px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; color: white; background: #f59e0b;">Pausar</button>
-                <button onclick="reiniciarTemporizador()" style="padding: 10px 20px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; color: white; background: #ef4444;">Reiniciar</button>
-            </div>
-            <div style="background: rgba(148,163,184,0.08); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 12px; font-weight: bold;">🔕 Bloquear distracciones / Notificaciones</span>
-                <input type="checkbox" id="check-bloqueo-notif" style="width: 18px; height: 18px; accent-color: #ef4444; cursor: pointer;" onchange="toggleBloqueoNotificaciones()">
+                <button onclick="iniciarTemporizador()" style="padding: 10px 20px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; color: white; background: #10b981;" data-i18n="iniciar">Iniciar</button>
+                <button onclick="pausarTemporizador()" style="padding: 10px 20px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; color: white; background: #f59e0b;" data-i18n="pausar">Pausar</button>
+                <button onclick="reiniciarTemporizador()" style="padding: 10px 20px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; color: white; background: #ef4444;" data-i18n="reiniciar">Reiniciar</button>
             </div>
         </div>
     </section>
 
-    <!-- TIENDA DE CROQUETAS -->
+<!-- TIENDA -->
     <section id="vista-tienda" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="padding: 22px; text-align: center;">
-            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">🛒 Tienda de Mascotas</h3>
-            <p style="font-size: 12px; color: var(--subtext-color);">¡Canjea tus puntos XP por bolsas de croquetas para alimentar a tu perrito virtual!</p>
+            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" data-i18n="menu_tienda">🛒 Tienda de Mascotas</h3>
+            <p style="font-size: 12px; color: var(--subtext-color);" data-i18n="tienda_desc">Canjea tus puntos XP por bolsas de croquetas para Firulais.</p>
             <div style="background: rgba(148,163,184,0.08); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; margin-top: 20px;">
                 <div style="font-size: 32px; margin-bottom: 10px;">🍖</div>
-                <h4 style="margin: 0 0 5px 0; font-size: 14px;">Bolsa de Croquetas</h4>
+                <h4 style="margin: 0 0 5px 0; font-size: 14px;" data-i18n="bolsa_croquetas">Bolsa de Croquetas</h4>
                 <p style="font-size: 12px; color: var(--subtext-color); margin-bottom: 15px;">Costo: <strong>25 XP</strong></p>
-                <button onclick="comprarCroquetas()" style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px;">Comprar Bolsa</button>
+                <button onclick="comprarCroquetas()" style="background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px;" data-i18n="comprar">Comprar Bolsa</button>
             </div>
         </div>
     </section>
 
-    <!-- PANTALLA INMERSIVA DE BLOQUEO -->
-    <div id="pantalla-bloqueo" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 99999; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 20px; box-sizing: border-box;">
-        <h2 style="margin-bottom: 10px; font-size: 22px;">🛡️ Modo Concentración Activado</h2>
-        <p style="color: #94a3b8; font-size: 13px; margin-bottom: 30px;">Notificaciones y distracciones bloqueadas. ¡Tú puedes con esto!</p>
-        <div id="timer-inmersivo-display" style="font-size: 64px; font-weight: 800; font-family: monospace; margin-bottom: 30px; color: #38bdf8;">25:00</div>
-        <button onclick="desactivarModoInmersivo()" style="background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 14px;">Desbloquear y Salir</button>
-    </div>
+    <!-- PERFIL -->
     <section id="vista-perfil" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="padding: 22px; text-align: center;">
             <div style="width: 90px; height: 90px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden; border: 3px solid #6366f1;" id="perfil-avatar-grande">👤</div>
             <label style="background: #6366f1; color: white; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: inline-block; margin-bottom: 15px;">
-                📷 Cambiar Foto
+                <span data-i18n="cambiar_foto">📷 Cambiar Foto</span>
                 <input type="file" id="input-foto-perfil" accept="image/*" style="display: none;" onchange="cambiarFotoPerfil(this)">
             </label>
             <input type="text" id="input-nombre-perfil" oninput="autoGuardarPerfil()" placeholder="Tu nombre o apodo..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; text-align: center; background: var(--card-bg); color: var(--text-color);">
             <input type="text" id="input-desc-perfil" oninput="autoGuardarPerfil()" placeholder="Tu descripción o grupo..." style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 12px; text-align: center; background: var(--card-bg); color: var(--text-color);">
 
-            <!-- PERRITO VIRTUAL -->
             <div style="background: rgba(148,163,184,0.08); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-top: 15px;">
                 <div style="font-size: 40px; margin-bottom: 5px;" id="perro-avatar-emoji">🐶</div>
-                <h4 style="margin: 0 0 5px 0; font-size: 14px;">Firulais (Mascota Virtual)</h4>
+                <h4 style="margin: 0 0 5px 0; font-size: 14px;" data-i18n="mascota_titulo">Firulais (Mascota Virtual)</h4>
                 <p id="perro-estado-texto" style="font-size: 11px; color: var(--subtext-color); margin-bottom: 10px;">Hambre: 75%</p>
                 <div style="background: rgba(148,163,184,0.3); border-radius: 8px; height: 10px; overflow: hidden; margin-bottom: 12px;">
                     <div id="barra-hambre-perro" style="background: #f59e0b; width: 75%; height: 100%;"></div>
                 </div>
-                <button onclick="alimentarPerro()" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px;">🍖 Dar de Comer (1 Croqueta)</button>
+                <button onclick="alimentarPerro()" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px;" data-i18n="dar_comer">🍖 Dar de Comer (1 Croqueta)</button>
             </div>
         </div>
     </section>
 
+    <!-- CONFIGURACIÓN CON IDIOMA GLOBAL Y NOMBRES EN MAYÚSCULAS -->
     <section id="vista-config" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
-            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="txt-title-config">⚙️ Configuración del Sistema</h3>
+            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" data-i18n="menu_config">⚙️ Configuración del Sistema</h3>
+            
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                <span style="font-size: 13px; font-weight: bold;">🌐 Idioma / Language</span>
+                <span style="font-size: 13px; font-weight: bold;" data-i18n="idioma_lbl">🌐 Idioma / Language</span>
                 <select id="select-idioma" onchange="cambiarIdioma(this.value)" style="padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; background: var(--card-bg); color: var(--text-color);">
                     <option value="es">Español</option>
                     <option value="en">English</option>
                 </select>
             </div>
+
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                <span style="font-size: 13px; font-weight: bold;" id="txt-modo-oscuro">🌙 Modo Oscuro</span>
-                <button onclick="toggleDarkMode()" id="btn-dark-mode" style="background: #1e293b; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">Activar</button>
+                <span style="font-size: 13px; font-weight: bold;" data-i18n="modo_oscuro">🌙 Modo Oscuro</span>
+                <button onclick="toggleDarkMode()" id="btn-dark-mode" style="background: #1e293b; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;" data-i18n="activar">Activar</button>
             </div>
-            <h4 style="font-size: 13px; margin: 18px 0 8px 0;" id="txt-lib-fondos">🎨 Biblioteca de Fondos</h4>
-            <div class="biblioteca-fondos">
-                <div class="opcion-fondo" onclick="cambiarFondo('bg-burbujas')"><div class="preview-mini" style="background: #bae6fd;"></div><span style="font-size: 11px; font-weight: bold;">Burbujas 🫧</span></div>
-                <div class="opcion-fondo" onclick="cambiarFondo('bg-estrellitas')"><div class="preview-mini" style="background: #0f172a;"></div><span style="font-size: 11px; font-weight: bold;">Estrellitas ✨</span></div>
-                <div class="opcion-fondo" onclick="cambiarFondo('bg-matematicas')"><div class="preview-mini" style="background: #e2e8f0;"></div><span style="font-size: 11px; font-weight: bold;">Libros 📚</span></div>
-                <div class="opcion-fondo" onclick="cambiarFondo('bg-corazones')"><div class="preview-mini" style="background: #fce7f3;"></div><span style="font-size: 11px; font-weight: bold;">Corazones 💕</span></div>
+            
+            <h4 style="font-size: 13px; margin: 18px 0 8px 0;" data-i18n="biblioteca_fondos">🎨 Biblioteca de Fondos</h4>
+            <div class="biblioteca-fondos" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <div onclick="cambiarFondo('bg-burbujas')" style="background:var(--card-bg); padding:10px; border-radius:8px; border:1px solid var(--border-color); text-align:center; cursor:pointer;"><span style="font-size:11px; font-weight:bold;">Burbujas 🫧</span></div>
+                <div onclick="cambiarFondo('bg-estrellitas')" style="background:var(--card-bg); padding:10px; border-radius:8px; border:1px solid var(--border-color); text-align:center; cursor:pointer;"><span style="font-size:11px; font-weight:bold;">Estrellitas ✨</span></div>
+                <div onclick="cambiarFondo('bg-matematicas')" style="background:var(--card-bg); padding:10px; border-radius:8px; border:1px solid var(--border-color); text-align:center; cursor:pointer;"><span style="font-size:11px; font-weight:bold;">Libros 📚</span></div>
+                <div onclick="cambiarFondo('bg-corazones')" style="background:var(--card-bg); padding:10px; border-radius:8px; border:1px solid var(--border-color); text-align:center; cursor:pointer;"><span style="font-size:11px; font-weight:bold;">Corazones 💕</span></div>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border-color);">
-                <span style="font-size: 12px; font-weight: bold;">Restablecer datos de fábrica</span>
-                <button onclick="resetearTodo()" style="background: #fee2e2; color: #ef4444; border: none; padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer;">Borrar</button>
+
+            <!-- CRÉDITOS OFICIALES EN MAYÚSCULAS -->
+            <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid #818cf8; border-radius: 14px; padding: 16px; margin-top: 15px;">
+                <h4 style="margin: 0 0 6px 0; font-size: 14px; color: #4f46e5;" data-i18n="acerca_titulo">ℹ️ Acerca de StudyBox — Versión 2.0</h4>
+                <p style="font-size: 11px; color: var(--subtext-color); margin: 0 0 10px 0;" data-i18n="acerca_sub">Portal Estudiantil de Productividad desarrollado en CBTis 105.</p>
+                <div style="font-size: 11px; line-height: 1.6;">
+                    <div><strong>👨‍💻 Capitán y Programación:</strong> EMILIANO NUÑEZ HERNÁNDEZ</div>
+                    <div><strong>🎨 Diseño de Interfaz (UI):</strong> ISABELA JAZMIN JIMÉNEZ VILLALOBOS</div>
+                    <div><strong>📓 Bitácora del Proyecto:</strong> KEVIN ALEJANDRO CABRERA ANTONIO</div>
+                    <div><strong>🧪 Control de Calidad (Tester):</strong> ANA LILIA PÉREZ CRUZ</div>
+                </div>
             </div>
         </div>
     </section>
 
     <nav class="nav-inferior">
-        <a class="nav-item activo" onclick="mostrarVista('inicio', this)"><span class="nav-icon">🏠</span><span>inicio</span></a>
-        <a class="nav-item" onclick="mostrarVista('funciones', this)"><span class="nav-icon">📁</span><span>funciones</span></a>
-        <a class="nav-item" onclick="mostrarVista('tienda', this)"><span class="nav-icon">🛒</span><span>tienda</span></a>
-        <a class="nav-item" onclick="mostrarVista('perfil', this)"><span class="nav-icon">👤</span><span>perfil</span></a>
-        <a class="nav-item" onclick="mostrarVista('config', this)"><span class="nav-icon">⚙️</span><span>config</span></a>
+        <div class="nav-item activo" onclick="mostrarVista('inicio', this)"><span class="nav-icon">🏠</span><span data-i18n="nav_inicio">inicio</span></div>
+        <div class="nav-item" onclick="mostrarVista('funciones', this)"><span class="nav-icon">📁</span><span data-i18n="nav_funciones">funciones</span></div>
+        <div class="nav-item" onclick="mostrarVista('tienda', this)"><span class="nav-icon">🛒</span><span data-i18n="nav_tienda">tienda</span></div>
+        <div class="nav-item" onclick="mostrarVista('perfil', this)"><span class="nav-icon">👤</span><span data-i18n="nav_perfil">perfil</span></div>
+        <div class="nav-item" onclick="mostrarVista('config', this)"><span class="nav-icon">⚙️</span><span data-i18n="nav_config">config</span></div>
     </nav>
+        <script>
+        // --- DICCIONARIO DE IDIOMAS ---
+        const i18nTextos = {
+            es: {
+                cofre: "🎁 Cofre Diario",
+                menu_agenda: "AGENDA DE TAREAS",
+                menu_notas: "NOTA Y APUNTES",
+                menu_cal: "CALENDARIO",
+                menu_calc: "CALCULADORA",
+                menu_ruleta: "RULETA DE AZAR",
+                menu_timer: "TEMPORIZADOR",
+                bienvenida_msg: "HOLA QUE BUENO VERTE",
+                progreso_act: "Progreso de Actividades",
+                reg_tarea: "Registrar Nueva Tarea",
+                adj_img: "Adjuntar Imagen:",
+                fecha_limite: "Fecha límite de entrega:",
+                btn_guardar_tarea: "Guardar Tarea en Agenda",
+                no_tareas: "No hay tareas registradas.",
+                btn_nueva_nota: "+ Nueva Nota",
+                no_notas: "No hay notas guardadas.",
+                volver: "← Volver a la lista",
+                crear_evento: "➕ Crear Evento con Temporizador",
+                sel_color: "🎨 Selecciona un Color Pastel:",
+                btn_guardar_evento: "Guardar Evento y Calcular Días",
+                hist_calc: "🕒 Historial de cálculos",
+                borrar_todo: "Borrar todo",
+                guardar: "💾 Guardar",
+                nueva: "+ Nueva",
+                girar: "GIRAR",
+                add_pieza: "Añadir Nueva Pieza",
+                add_btn: "+ Añadir",
+                minutos: "Minutos",
+                iniciar: "Iniciar",
+                pausar: "Pausar",
+                reiniciar: "Reiniciar",
+                menu_tienda: "🛒 Tienda de Mascotas",
+                tienda_desc: "Canjea tus puntos XP por bolsas de croquetas para Firulais.",
+                bolsa_croquetas: "Bolsa de Croquetas",
+                comprar: "Comprar Bolsa",
+                cambiar_foto: "📷 Cambiar Foto",
+                mascota_titulo: "Firulais (Mascota Virtual)",
+                dar_comer: "🍖 Dar de Comer (1 Croqueta)",
+                menu_config: "⚙️ Configuración del Sistema",
+                idioma_lbl: "🌐 Idioma / Language",
+                modo_oscuro: "🌙 Modo Oscuro",
+                activar: "Activar",
+                desactivar: "Desactivar",
+                biblioteca_fondos: "🎨 Biblioteca de Fondos",
+                acerca_titulo: "ℹ️ Acerca de StudyBox — Versión 2.0",
+                acerca_sub: "Portal Estudiantil de Productividad desarrollado en CBTis 105.",
+                nav_inicio: "inicio",
+                nav_funciones: "funciones",
+                nav_tienda: "tienda",
+                nav_perfil: "perfil",
+                nav_config: "config"
+            },
+            en: {
+                cofre: "🎁 Daily Chest",
+                menu_agenda: "TASK AGENDA",
+                menu_notas: "NOTES",
+                menu_cal: "CALENDAR",
+                menu_calc: "CALCULATOR",
+                menu_ruleta: "ROULETTE",
+                menu_timer: "TIMER",
+                bienvenida_msg: "HELLO GLAD TO SEE YOU",
+                progreso_act: "Activity Progress",
+                reg_tarea: "Register New Task",
+                adj_img: "Attach Image:",
+                fecha_limite: "Due Date:",
+                btn_guardar_tarea: "Save Task",
+                no_tareas: "No tasks registered.",
+                btn_nueva_nota: "+ New Note",
+                no_notas: "No notes saved.",
+                volver: "← Back to list",
+                crear_evento: "➕ Create Event with Timer",
+                sel_color: "🎨 Select Pastel Color:",
+                btn_guardar_evento: "Save Event & Calculate Days",
+                hist_calc: "🕒 Calculation History",
+                borrar_todo: "Clear all",
+                guardar: "💾 Save",
+                nueva: "+ New",
+                girar: "SPIN",
+                add_pieza: "Add New Slice",
+                add_btn: "+ Add",
+                minutos: "Minutes",
+                iniciar: "Start",
+                pausar: "Pause",
+                reiniciar: "Reset",
+                menu_tienda: "🛒 Pet Shop",
+                tienda_desc: "Exchange XP points for food bags for Firulais.",
+                bolsa_croquetas: "Food Bag",
+                comprar: "Buy Bag",
+                cambiar_foto: "📷 Change Photo",
+                mascota_titulo: "Firulais (Virtual Pet)",
+                dar_comer: "🍖 Feed Pet (1 Bag)",
+                menu_config: "⚙️ System Settings",
+                idioma_lbl: "🌐 Language",
+                modo_oscuro: "🌙 Dark Mode",
+                activar: "Activate",
+                desactivar: "Deactivate",
+                biblioteca_fondos: "🎨 Background Library",
+                acerca_titulo: "ℹ️ About StudyBox — Version 2.0",
+                acerca_sub: "Student Productivity Portal developed at CBTis 105.",
+                nav_inicio: "home",
+                nav_funciones: "features",
+                nav_tienda: "shop",
+                nav_perfil: "profile",
+                nav_config: "config"
+            }
+        };
 
-    <script>
+        function cambiarIdioma(lang) {
+            localStorage.setItem('sb_lang', lang);
+            aplicarIdioma(lang);
+        }
+
+        function aplicarIdioma(lang) {
+            const dict = i18nTextos[lang] || i18nTextos.es;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.textContent = dict[key];
+            });
+            const btnDark = document.getElementById('btn-dark-mode');
+            if (btnDark) {
+                const isDark = document.body.classList.contains('dark-mode');
+                btnDark.textContent = isDark ? (lang === 'en' ? 'Deactivate' : 'Desactivar') : (lang === 'en' ? 'Activate' : 'Activar');
+            }
+        }
+
         function mostrarVista(idVista, navEl) {
             document.querySelectorAll('.vista').forEach(v => v.style.display = 'none');
             const target = document.getElementById('vista-' + idVista);
@@ -416,21 +562,16 @@
 
         function abrirAgenda() { mostrarVista('agenda'); }
         function abrirNotas() { mostrarVista('notas'); }
-        function abrirCalendario() { mostrarVista('calendario'); renderizarCalendarioAvanzado(); }
+        function abrirCalendario() { mostrarVista('calendario'); renderizarCalendarioAvanzado(); renderizarEventosCalendario(); }
         function abrirCalculadora() { mostrarVista('calculadora'); }
-        function abrirRuleta() { mostrarVista('ruleta'); renderizarSelectorRuletas(); dibujarRuleta(); }
+        function abrirRuleta() { mostrarVista('ruleta'); renderizarSelectorRuletas(); renderizarPaleta(); renderizarPiezasRuleta(); dibujarRuleta(); }
         function abrirTemporizador() { mostrarVista('temporizador'); }
 
-        // --- SISTEMA DE RECOMPENSAS, XP Y MASCOTA ---
+        // --- SISTEMA DE RECOMPENSAS Y MASCOTA ---
         let userXP = parseInt(localStorage.getItem('sb_xp')) || 50;
         let userCroquetas = parseInt(localStorage.getItem('sb_croquetas')) || 2;
         let ultimoCofreDia = localStorage.getItem('sb_cofre_dia') || '';
-        
-        let mascotaData = JSON.parse(localStorage.getItem('sb_mascota')) || {
-            hambre: 75,
-            ultimoRegistro: new Date().toDateString(),
-            ausenteHasta: null
-        };
+        let mascotaData = JSON.parse(localStorage.getItem('sb_mascota')) || { hambre: 75, ultimoRegistro: new Date().toDateString(), ausenteHasta: null };
 
         function actualizarUIRecompensas() {
             document.getElementById('txt-xp-total').textContent = userXP;
@@ -440,171 +581,87 @@
 
         function reclamarCofreDiario() {
             const hoy = new Date().toDateString();
-            if (ultimoCofreDia === hoy) {
-                return alert('¡Ya reclamaste tu cofre de hoy! Vuelve mañana.');
-            }
-            ultimoCofreDia = hoy;
-            localStorage.setItem('sb_cofre_dia', hoy);
-            userXP += 30;
-            userCroquetas += 1;
-            localStorage.setItem('sb_xp', userXP);
-            localStorage.setItem('sb_croquetas', userCroquetas);
-            actualizarUIRecompensas();
-            alert('🎁 ¡Cofre abierto! Ganaste +30 XP y +1 bolsa de croquetas.');
+            if (ultimoCofreDia === hoy) return alert('¡Ya reclamaste tu cofre de hoy! Vuelve mañana.');
+            ultimoCofreDia = hoy; localStorage.setItem('sb_cofre_dia', hoy);
+            userXP += 30; userCroquetas += 1;
+            localStorage.setItem('sb_xp', userXP); localStorage.setItem('sb_croquetas', userCroquetas);
+            actualizarUIRecompensas(); alert('🎁 ¡Cofre abierto! Ganaste +30 XP y +1 bolsa de croquetas.');
         }
 
         function comprarCroquetas() {
-            if (userXP < 25) {
-                return alert('No tienes suficiente XP. ¡Completa tareas o estudia para ganar más!');
-            }
-            userXP -= 25;
-            userCroquetas += 1;
-            localStorage.setItem('sb_xp', userXP);
-            localStorage.setItem('sb_croquetas', userCroquetas);
-            actualizarUIRecompensas();
-            alert('🛒 ¡Compra exitosa! Has adquirido 1 bolsa de croquetas.');
+            if (userXP < 25) return alert('No tienes suficiente XP.');
+            userXP -= 25; userCroquetas += 1;
+            localStorage.setItem('sb_xp', userXP); localStorage.setItem('sb_croquetas', userCroquetas);
+            actualizarUIRecompensas(); alert('🛒 ¡Compra exitosa! Adquiriste 1 bolsa de croquetas.');
         }
 
         function verificarEstadoMascota() {
             const hoyStr = new Date().toDateString();
             if (mascotaData.ultimoRegistro !== hoyStr) {
-                // Pasó al menos un día
-                const fechaGuardada = new Date(mascotaData.ultimoRegistro);
-                const fechaActual = new Date(hoyStr);
-                const diasDiferencia = Math.floor((fechaActual - fechaGuardada) / (1000 * 60 * 60 * 24));
-
-                if (mascotaData.ausenteHasta) {
-                    if (new Date() >= new Date(mascotaData.ausenteHasta)) {
-                        mascotaData.ausenteHasta = null;
-                        mascotaData.hambre = 50;
-                    }
-                } else {
-                    mascotaData.hambre -= (25 * diasDiferencia);
+                const diff = Math.floor((new Date(hoyStr) - new Date(mascotaData.ultimoRegistro)) / (1000 * 60 * 60 * 24));
+                if (mascotaData.ausenteHasta && new Date() >= new Date(mascotaData.ausenteHasta)) {
+                    mascotaData.ausenteHasta = null; mascotaData.hambre = 50;
+                } else if (!mascotaData.ausenteHasta) {
+                    mascotaData.hambre -= (25 * diff);
                     if (mascotaData.hambre <= 0) {
                         mascotaData.hambre = 0;
-                        const fechaRegreso = new Date();
-                        fechaRegreso.setDate(fechaRegreso.getDate() + 3);
-                        mascotaData.ausenteHasta = fechaRegreso.toDateString();
+                        const regreso = new Date(); regreso.setDate(regreso.getDate() + 3);
+                        mascotaData.ausenteHasta = regreso.toDateString();
                     }
                 }
                 mascotaData.ultimoRegistro = hoyStr;
                 localStorage.setItem('sb_mascota', JSON.stringify(mascotaData));
             }
-
             const emojiEl = document.getElementById('perro-avatar-emoji');
             const textoEl = document.getElementById('perro-estado-texto');
             const barraEl = document.getElementById('barra-hambre-perro');
-
             if (mascotaData.ausenteHasta) {
-                emojiEl.textContent = '🧳';
-                textoEl.textContent = 'Firulais se fue de viaje por descuidar su hambre. Regresa en 3 días.';
-                barraEl.style.width = '0%';
+                emojiEl.textContent = '🧳'; textoEl.textContent = 'Firulais se fue de viaje por hambre (regresa en 3 días).'; barraEl.style.width = '0%';
             } else {
-                emojiEl.textContent = '🐶';
-                textoEl.textContent = `Hambre: ${mascotaData.hambre}%`;
-                barraEl.style.width = mascotaData.hambre + '%';
+                emojiEl.textContent = '🐶'; textoEl.textContent = `Hambre: ${mascotaData.hambre}%`; barraEl.style.width = mascotaData.hambre + '%';
             }
         }
 
         function alimentarPerro() {
-            if (mascotaData.ausenteHasta) {
-                return alert('Tu perrito no está aquí, se fue de viaje por hambre.');
-            }
-            if (userCroquetas <= 0) {
-                return alert('No tienes bolsas de croquetas. Ve a la Tienda a comprarlas.');
-            }
-            if (mascotaData.hambre >= 100) {
-                return alert('¡Tu perrito ya está completamente lleno!');
-            }
-            userCroquetas--;
-            mascotaData.hambre = Math.min(100, mascotaData.hambre + 25);
-            localStorage.setItem('sb_croquetas', userCroquetas);
-            localStorage.setItem('sb_mascota', JSON.stringify(mascotaData));
-            actualizarUIRecompensas();
-            alert('🍖 ¡Has alimentado a Firulais! Su barriga está más contenta.');
+            if (mascotaData.ausenteHasta) return alert('Firulais no está aquí, se fue de viaje.');
+            if (userCroquetas <= 0) return alert('No tienes bolsas de croquetas. Ve a la Tienda.');
+            if (mascotaData.hambre >= 100) return alert('¡Firulais ya está completamente lleno!');
+            userCroquetas--; mascotaData.hambre = Math.min(100, mascotaData.hambre + 25);
+            localStorage.setItem('sb_croquetas', userCroquetas); localStorage.setItem('sb_mascota', JSON.stringify(mascotaData));
+            actualizarUIRecompensas(); alert('🍖 ¡Has alimentado a Firulais!');
         }
 
-        // --- RESTO DE FUNCIONES (Idioma, Temas, Tareas, Notas, Calendario, Calc, Ruleta, Timer) ---
-        function cambiarIdioma(lang) {
-            localStorage.setItem('sb_lang', lang);
-            if (lang === 'en') {
-                document.getElementById('txt-card-agenda').textContent = 'TASK AGENDA';
-                document.getElementById('txt-card-notas').textContent = 'NOTES & APPS';
-                document.getElementById('txt-card-cal').textContent = 'CALENDAR';
-                document.getElementById('txt-card-calc').textContent = 'CALCULATOR';
-                document.getElementById('txt-card-ruleta').textContent = 'SPIN WHEEL';
-                document.getElementById('txt-card-timer').textContent = 'FOCUS TIMER';
-                document.getElementById('txt-bienvenida').textContent = 'HELLO NICE TO SEE YOU';
-            } else {
-                document.getElementById('txt-card-agenda').textContent = 'AGENDA DE TAREAS';
-                document.getElementById('txt-card-notas').textContent = 'NOTA Y APUNTES';
-                document.getElementById('txt-card-cal').textContent = 'CALENDARIO';
-                document.getElementById('txt-card-calc').textContent = 'CALCULADORA';
-                document.getElementById('txt-card-ruleta').textContent = 'RULETA DE AZAR';
-                document.getElementById('txt-card-timer').textContent = 'TEMPORIZADOR';
-                document.getElementById('txt-bienvenida').textContent = 'HOLA QUE BUENO VERTE';
-            }
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const activo = document.body.classList.contains('dark-mode');
-            localStorage.setItem('sb_dark', activo);
-            document.getElementById('btn-dark-mode').textContent = activo ? 'Desactivar' : 'Activar';
-        }
-
-        function cambiarFondo(claseFondo) {
-            document.body.classList.remove('bg-burbujas', 'bg-estrellitas', 'bg-matematicas', 'bg-corazones');
-            document.body.classList.add(claseFondo);
-            localStorage.setItem('sb_bg', claseFondo);
-        }
-
-        function cambiarFotoPerfil(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem('sb_foto', e.target.result);
-                    aplicarFotoPerfil(e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function aplicarFotoPerfil(src) {
-            document.getElementById('header-avatar').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`;
-            document.getElementById('perfil-avatar-grande').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`;
-        }
-
-        function autoGuardarPerfil() {
-            const nom = document.getElementById('input-nombre-perfil').value.trim();
-            const desc = document.getElementById('input-desc-perfil').value.trim();
-            if (nom) { document.getElementById('header-nombre').textContent = nom; localStorage.setItem('sb_nombre', nom); }
-            if (desc) { document.getElementById('header-desc').textContent = desc; localStorage.setItem('sb_desc', desc); }
-        }
-
+        // --- AGENDA CON BARRA DE PROGRESO Y SUBIDA DE IMAGEN ---
         let tareas = JSON.parse(localStorage.getItem('sb_tareas')) || [];
         document.getElementById('btn-guardar-tarea').onclick = function() {
             const tit = document.getElementById('task-titulo').value.trim();
             const desc = document.getElementById('task-desc').value.trim();
             const fecha = document.getElementById('task-fecha').value;
-            if (!tit) return alert('Escribe un título para la tarea.');
-            tareas.push({ id: Date.now(), titulo: tit, desc: desc, fecha: fecha, completada: false });
-            localStorage.setItem('sb_tareas', JSON.stringify(tareas));
-            document.getElementById('task-titulo').value = '';
-            document.getElementById('task-desc').value = '';
-            renderizarTareas();
+            const fileInput = document.getElementById('task-img-input');
+            if (!tit) return alert('Escribe un título.');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { guardarTareaFinal(tit, desc, fecha, e.target.result); };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else { guardarTareaFinal(tit, desc, fecha, null); }
         };
+
+        function guardarTareaFinal(tit, desc, fecha, img) {
+            tareas.push({ id: Date.now(), titulo: tit, desc, fecha, imagen: img, completada: false });
+            localStorage.setItem('sb_tareas', JSON.stringify(tareas));
+            document.getElementById('task-titulo').value = ''; document.getElementById('task-desc').value = '';
+            document.getElementById('task-fecha').value = ''; document.getElementById('task-img-input').value = '';
+            renderizarTareas();
+        }
 
         function toggleTarea(id) {
             tareas = tareas.map(t => t.id === id ? { ...t, completada: !t.completada } : t);
-            localStorage.setItem('sb_tareas', JSON.stringify(tareas));
-            renderizarTareas();
+            localStorage.setItem('sb_tareas', JSON.stringify(tareas)); renderizarTareas();
         }
 
         function eliminarTarea(id) {
             tareas = tareas.filter(t => t.id !== id);
-            localStorage.setItem('sb_tareas', JSON.stringify(tareas));
-            renderizarTareas();
+            localStorage.setItem('sb_tareas', JSON.stringify(tareas)); renderizarTareas();
         }
 
         function renderizarTareas() {
@@ -614,24 +671,44 @@
             const pct = total === 0 ? 0 : Math.round((comp / total) * 100);
             document.getElementById('texto-porcentaje-global').textContent = `${pct}% (${comp}/${total})`;
             document.getElementById('barra-progreso-global').style.width = pct + '%';
-            if (total === 0) { cont.innerHTML = '<p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay tareas registradas.</p>'; return; }
+
+            if (total === 0) { cont.innerHTML = '<p style="font-size: 12px; color: #9ca3af; text-align: center;" data-i18n="no_tareas">No hay tareas registradas.</p>'; aplicarIdioma(localStorage.getItem('sb_lang')||'es'); return; }
             cont.innerHTML = tareas.map(t => `
-                <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div onclick="toggleTarea(${t.id})" style="cursor: pointer; flex: 1;">
-                        <strong style="font-size: 13px; text-decoration: ${t.completada ? 'line-through' : 'none'};">${t.completada ? '✅' : '⬜'} ${t.titulo}</strong>
-                        <p style="margin: 3px 0 0 0; font-size: 11px; color: var(--subtext-color);">${t.desc || ''}</p>
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex:1;">
+                            <strong style="font-size: 13px; text-decoration: ${t.completada ? 'line-through' : 'none'};">${t.completada ? '✅' : '📌'} ${t.titulo}</strong>
+                            <p style="margin: 4px 0; font-size: 11px; color: var(--subtext-color);">${t.desc || ''}</p>
+                            <span style="font-size: 10px; color: #3b82f6;">📅 Vence: ${t.fecha || 'No especificada'}</span>
+                            ${t.imagen ? `<img src="${t.imagen}" style="width:100%; height:130px; object-fit:cover; border-radius:8px; margin-top:8px; display:block;">` : ''}
+                        </div>
+                        <button onclick="eliminarTarea(${t.id})" style="background:#fee2e2; color:#ef4444; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer; margin-left:8px;">Eliminar</button>
                     </div>
-                    <button onclick="eliminarTarea(${t.id})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: bold;">✕</button>
+                    <div style="margin-top: 8px;"><button onclick="toggleTarea(${t.id})" style="background:none; border:none; color:#10b981; font-size:11px; font-weight:bold; cursor:pointer;">${t.completada ? 'Desmarcar' : 'Marcar hecha'}</button></div>
                 </div>
             `).join('');
         }
 
+        // --- BLOG DE NOTAS ---
         let notas = JSON.parse(localStorage.getItem('sb_notas')) || [];
         let notaEditandoId = null;
+
+        function insertarImagenEnNota(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgHtml = `<img src="${e.target.result}" style="max-width:100%; border-radius:8px; margin:8px 0; display:block;">`;
+                    document.getElementById('nota-contenido').innerHTML += imgHtml;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         document.getElementById('btn-nueva-nota').onclick = function() {
             notaEditandoId = Date.now();
             document.getElementById('nota-input-titulo').value = '';
             document.getElementById('nota-contenido').innerHTML = '';
+            document.getElementById('nota-fecha-info').textContent = '';
             document.getElementById('contenedor-lista-notas').style.display = 'none';
             document.getElementById('editor-nota-view').style.display = 'block';
         };
@@ -641,8 +718,9 @@
             const cont = document.getElementById('nota-contenido').innerHTML;
             if (cont.trim() !== '') {
                 const idx = notas.findIndex(n => n.id === notaEditandoId);
-                if (idx >= 0) notas[idx] = { id: notaEditandoId, titulo: tit, contenido: cont };
-                else notas.unshift({ id: notaEditandoId, titulo: tit, contenido: cont });
+                const fh = new Date().toLocaleString();
+                if (idx >= 0) notas[idx] = { id: notaEditandoId, titulo: tit, contenido: cont, fecha: fh };
+                else notas.unshift({ id: notaEditandoId, titulo: tit, contenido: cont, fecha: fh });
                 localStorage.setItem('sb_notas', JSON.stringify(notas));
             }
             document.getElementById('editor-nota-view').style.display = 'none';
@@ -652,10 +730,10 @@
 
         function renderizarNotasLista() {
             const cont = document.getElementById('lista-notas');
-            if (notas.length === 0) { cont.innerHTML = '<p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay notas guardadas.</p>'; return; }
+            if (notas.length === 0) { cont.innerHTML = '<p style="font-size: 12px; color: #9ca3af; text-align: center;" data-i18n="no_notas">No hay notas guardadas.</p>'; aplicarIdioma(localStorage.getItem('sb_lang')||'es'); return; }
             cont.innerHTML = notas.map(n => `
                 <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div onclick="abrirNotaExistente(${n.id})" style="cursor: pointer; flex: 1;"><strong style="font-size: 13px;">📄 ${n.titulo}</strong></div>
+                    <div onclick="abrirNotaExistente(${n.id})" style="cursor: pointer; flex: 1;"><strong style="font-size: 13px;">📄 ${n.titulo}</strong><span style="font-size:10px; color:var(--subtext-color); display:block;">${n.fecha || ''}</span></div>
                     <button onclick="eliminarNota(${n.id})" style="background: none; border: none; color: #ef4444; cursor: pointer;">✕</button>
                 </div>
             `).join('');
@@ -667,6 +745,7 @@
             notaEditandoId = n.id;
             document.getElementById('nota-input-titulo').value = n.titulo;
             document.getElementById('nota-contenido').innerHTML = n.contenido;
+            document.getElementById('nota-fecha-info').textContent = 'Creada / Modificada: ' + (n.fecha || '');
             document.getElementById('contenedor-lista-notas').style.display = 'none';
             document.getElementById('editor-nota-view').style.display = 'block';
         }
@@ -675,6 +754,50 @@
             notas = notas.filter(n => n.id !== id);
             localStorage.setItem('sb_notas', JSON.stringify(notas));
             renderizarNotasLista();
+        }
+    </script>
+
+      <script>
+        // --- CALENDARIO CON EVENTOS Y CÁLCULO DE DÍAS FALTANTES ---
+        let colorPastelSelec = '#fbcfe8';
+        let eventosCalendario = JSON.parse(localStorage.getItem('sb_cal_eventos')) || [];
+
+        function seleccionarColorPastel(color) { colorPastelSelec = color; }
+
+        function guardarEventoCalendario() {
+            const nombre = document.getElementById('cal-evento-nombre').value.trim();
+            const fechaStr = document.getElementById('cal-evento-fecha').value;
+            if (!nombre || !fechaStr) return alert('Escribe un nombre y selecciona una fecha.');
+            eventosCalendario.push({ id: Date.now(), nombre, fecha: fechaStr, color: colorPastelSelec });
+            localStorage.setItem('sb_cal_eventos', JSON.stringify(eventosCalendario));
+            document.getElementById('cal-evento-nombre').value = '';
+            renderizarCalendarioAvanzado();
+            renderizarEventosCalendario();
+        }
+
+        function eliminarEventoCal(id) {
+            eventosCalendario = eventosCalendario.filter(e => e.id !== id);
+            localStorage.setItem('sb_cal_eventos', JSON.stringify(eventosCalendario));
+            renderizarCalendarioAvanzado();
+            renderizarEventosCalendario();
+        }
+
+        function renderizarEventosCalendario() {
+            const cont = document.getElementById('lista-eventos-cal');
+            if (!cont) return;
+            if (eventosCalendario.length === 0) { cont.innerHTML = ''; return; }
+            const hoy = new Date(); hoy.setHours(0,0,0,0);
+            cont.innerHTML = eventosCalendario.map(ev => {
+                const fEv = new Date(ev.fecha + 'T00:00:00');
+                const diffDias = Math.ceil((fEv - hoy) / (1000 * 60 * 60 * 24));
+                let etiqueta = diffDias > 0 ? `Faltan ${diffDias} día(s)` : (diffDias === 0 ? '¡Es hoy!' : `Pasó hace ${Math.abs(diffDias)} día(s)`);
+                return `
+                    <div style="background:${ev.color}; color:#1f2937; padding:10px; border-radius:8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+                        <div><strong>${ev.nombre}</strong> (${ev.fecha})<br><span style="font-size:11px; font-weight:bold;">⏳ ${etiqueta}</span></div>
+                        <button onclick="eliminarEventoCal(${ev.id})" style="background:rgba(0,0,0,0.1); border:none; border-radius:4px; padding:4px 8px; cursor:pointer;">✕</button>
+                    </div>
+                `;
+            }).join('');
         }
 
         function renderizarCalendarioAvanzado() {
@@ -688,302 +811,198 @@
             let html = '';
             for (let i = 0; i < ajuste; i++) html += '<div></div>';
             for (let d = 1; d <= diasEnMes; d++) {
+                const fechaISO = `${anio}-${String(mes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const eventoDia = eventosCalendario.find(e => e.fecha === fechaISO);
+                const bg = eventoDia ? eventoDia.color : 'var(--card-bg)';
+                const txtColor = eventoDia ? '#1f2937' : 'var(--text-color)';
                 const esHoy = d === hoy.getDate() && mes === hoy.getMonth() && anio === hoy.getFullYear();
-                html += `<div class="dia-calendario ${esHoy ? 'dia-hoy' : ''}">${d}</div>`;
+                html += `<div class="dia-calendario ${esHoy ? 'dia-hoy' : ''}" style="background-color: ${bg}; color: ${txtColor};" onclick="seleccionarDiaEnInput('${fechaISO}')">${d}</div>`;
             }
             grid.innerHTML = html;
         }
 
-        function navegarMesClick(delta) {
-            const selMes = document.getElementById('select-mes');
-            let m = parseInt(selMes.value) + delta;
-            if (m < 0) m = 11; if (m > 11) m = 0;
-            selMes.value = m; renderizarCalendarioAvanzado();
+        function seleccionarDiaEnInput(fechaISO) {
+            document.getElementById('cal-evento-fecha').value = fechaISO;
+            const hoy = new Date(); hoy.setHours(0,0,0,0);
+            const fSel = new Date(fechaISO + 'T00:00:00');
+            const diff = Math.ceil((fSel - hoy) / (1000 * 60 * 60 * 24));
+            alert(diff > 0 ? `📅 Faltan ${diff} día(s) para el ${fechaISO}` : (diff === 0 ? '📅 ¡Esa fecha es hoy!' : `📅 Esa fecha fue hace ${Math.abs(diff)} día(s)`));
         }
 
+        function navegarMesClick(delta) {
+            const sel = document.getElementById('select-mes');
+            let m = parseInt(sel.value) + delta;
+            if (m < 0) m = 11; if (m > 11) m = 0;
+            sel.value = m; renderizarCalendarioAvanzado();
+        }
         function actualizarCalendarioSelect() { renderizarCalendarioAvanzado(); }
 
+        // --- CALCULADORA ---
         let expresionActual = '';
         let historialCalc = JSON.parse(localStorage.getItem('sb_calc_hist')) || [];
-        function actualizarVisorCalc() {
-            const visorOp = document.getElementById('calc-operacion');
-            if (visorOp) visorOp.textContent = expresionActual.replace(/\*/g, '×').replace(/\//g, '÷');
-        }
+        function actualizarVisorCalc() { document.getElementById('calc-operacion').textContent = expresionActual.replace(/\*/g, '×').replace(/\//g, '÷'); }
         function agregarCalc(v) { expresionActual += v; actualizarVisorCalc(); }
         function limpiarCalc() { expresionActual = ''; document.getElementById('calc-operacion').textContent = ''; document.getElementById('calc-resultado').textContent = '0'; }
         function borrarUltimo() { expresionActual = expresionActual.slice(0, -1); actualizarVisorCalc(); }
         function calcularResultado() {
             if (!expresionActual) return;
             try {
-                let expr = expresionActual.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
-                let res = Math.round(eval(expr) * 1000000) / 1000000;
+                let res = Math.round(eval(expresionActual.replace(/(\d+(\.\d+)?)%/g, '($1/100)')) * 1000000) / 1000000;
                 document.getElementById('calc-resultado').textContent = res;
-                const ahora = new Date();
-                const fh = ahora.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' }) + ' • ' + ahora.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-                historialCalc.unshift({ id: Date.now(), cuenta: `${expresionActual.replace(/\*/g, '×').replace(/\//g, '÷')} = ${res}`, fecha: fh });
-                if (historialCalc.length > 30) historialCalc.pop();
-                localStorage.setItem('sb_calc_hist', JSON.stringify(historialCalc));
-                renderizarHistorialCalc();
-                expresionActual = res.toString();
-                actualizarVisorCalc();
+                historialCalc.unshift({ id: Date.now(), cuenta: `${expresionActual} = ${res}`, fecha: new Date().toLocaleTimeString() });
+                if (historialCalc.length > 20) historialCalc.pop();
+                localStorage.setItem('sb_calc_hist', JSON.stringify(historialCalc)); renderizarHistorialCalc();
+                expresionActual = res.toString(); actualizarVisorCalc();
             } catch (e) { document.getElementById('calc-resultado').textContent = 'Error'; expresionActual = ''; }
         }
-
         function renderizarHistorialCalc() {
             const lista = document.getElementById('lista-historial-calc');
             if (!lista) return;
-            if (historialCalc.length === 0) { lista.innerHTML = '<li style="text-align: center; font-size: 11px; color: var(--subtext-color); padding: 8px 0;">Aún no hay operaciones guardadas.</li>'; return; }
-            lista.innerHTML = historialCalc.map(item => `
-                <li style="padding: 8px 10px; border-radius: 8px; background: var(--card-bg); border: 1px solid var(--border-color); margin-bottom: 6px; font-size: 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div><span style="font-weight: bold;">${item.cuenta}</span><span style="font-size: 10px; color: var(--subtext-color); display: block; margin-top: 2px;">${item.fecha}</span></div>
-                    <button onclick="eliminarItemHistorial(${item.id})" style="background: none; border: none; color: #ef4444; font-size: 14px; font-weight: bold; cursor: pointer;">✕</button>
-                </li>
-            `).join('');
+            if (historialCalc.length === 0) { lista.innerHTML = '<li style="text-align: center; font-size: 11px; color: var(--subtext-color);" data-i18n="no_calc">Aún no hay operaciones.</li>'; aplicarIdioma(localStorage.getItem('sb_lang')||'es'); return; }
+            lista.innerHTML = historialCalc.map(item => `<li style="padding: 6px; border-bottom: 1px solid var(--border-color); font-size: 11px; display:flex; justify-content:space-between;"><span>${item.cuenta}</span><button onclick="eliminarItemHistorial(${item.id})" style="border:none; background:none; color:#ef4444; cursor:pointer;">✕</button></li>`).join('');
         }
-
-        function eliminarItemHistorial(id) {
-            historialCalc = historialCalc.filter(item => item.id !== id);
-            localStorage.setItem('sb_calc_hist', JSON.stringify(historialCalc));
-            renderizarHistorialCalc();
-        }
-
+        function eliminarItemHistorial(id) { historialCalc = historialCalc.filter(i => i.id !== id); localStorage.setItem('sb_calc_hist', JSON.stringify(historialCalc)); renderizarHistorialCalc(); }
         function borrarHistorialCalc() { historialCalc = []; localStorage.removeItem('sb_calc_hist'); renderizarHistorialCalc(); }
 
-        const coloresPaleta = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
-        let colorSeleccionado = coloresPaleta[0];
-        let ruletasGuardadas = JSON.parse(localStorage.getItem('sb_ruletas_todas')) || [
-            { id: 'default', titulo: 'Mi Ruleta Principal', todosIguales: false, piezas: [
-                { id: 1, texto: 'Opción 1', peso: 5, color: '#3b82f6' },
-                { id: 2, texto: 'Opción 2', peso: 5, color: '#ec4899' }
-            ]}
-        ];
-        let ruletaActualId = localStorage.getItem('sb_ruleta_activa_id') || 'default';
-        let anguloActual = 0;
-        let girando = false;
+        // --- RULETA CON NOMBRES DIBUJADOS DENTRO DE LAS PIEZAS ---
+        const coloresPaleta = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+        let colorSelecRuleta = coloresPaleta[0];
+        let ruletas = JSON.parse(localStorage.getItem('sb_ruletas')) || [{ id: 'def', titulo: 'Mi Ruleta', piezas: [{id:1, texto:'Opción 1', peso:5, color:'#3b82f6'}, {id:2, texto:'Opción 2', peso:5, color:'#ec4899'}] }];
+        let ruletaId = localStorage.getItem('sb_ruleta_id') || 'def';
+        let angulo = 0, girando = false;
 
-        function obtenerRuletaActual() {
-            let r = ruletasGuardadas.find(x => x.id === ruletaActualId);
-            if (!r) { r = ruletasGuardadas[0]; ruletaActualId = r.id; }
-            if (r.todosIguales === undefined) r.todosIguales = false;
-            return r;
-        }
-
+        function obtenerRuleta() { return ruletas.find(r => r.id === ruletaId) || ruletas[0]; }
         function renderizarSelectorRuletas() {
-            const sel = document.getElementById('select-ruleta-guardada');
-            if (!sel) return;
-            sel.innerHTML = ruletasGuardadas.map(r => `<option value="${r.id}" ${r.id === ruletaActualId ? 'selected' : ''}>🎡 ${r.titulo}</option>`).join('');
-            const current = obtenerRuletaActual();
-            document.getElementById('ruleta-titulo-input').value = current.titulo;
-            document.getElementById('check-todos-iguales').checked = current.todosIguales;
+            const sel = document.getElementById('select-ruleta-guardada'); if (!sel) return;
+            sel.innerHTML = ruletas.map(r => `<option value="${r.id}" ${r.id === ruletaId ? 'selected' : ''}>${r.titulo}</option>`).join('');
+            document.getElementById('ruleta-titulo-input').value = obtenerRuleta().titulo;
         }
-
-        function cargarRuletaSeleccionada() {
-            ruletaActualId = document.getElementById('select-ruleta-guardada').value;
-            localStorage.setItem('sb_ruleta_activa_id', ruletaActualId);
-            renderizarSelectorRuletas();
-            renderizarPiezasRuleta();
-            dibujarRuleta();
-      }
-      function nuevaRuleta() {
-            const nombre = prompt('Nombre para la nueva ruleta:');
-            if (!nombre) return;
-            const nueva = { id: 'r_' + Date.now(), titulo: nombre, todosIguales: false, piezas: [{ id: Date.now() + 1, texto: 'Opción 1', peso: 5, color: '#3b82f6' }, { id: Date.now() + 2, texto: 'Opción 2', peso: 5, color: '#ec4899' }] };
-            ruletasGuardadas.push(nueva);
-            ruletaActualId = nueva.id;
-            localStorage.setItem('sb_ruletas_todas', JSON.stringify(ruletasGuardadas));
-            localStorage.setItem('sb_ruleta_activa_id', ruletaActualId);
-            renderizarSelectorRuletas();
-            renderizarPiezasRuleta();
-            dibujarRuleta();
+        function cargarRuletaSeleccionada() { ruletaId = document.getElementById('select-ruleta-guardada').value; localStorage.setItem('sb_ruleta_id', ruletaId); renderizarSelectorRuletas(); renderizarPiezasRuleta(); dibujarRuleta(); }
+        function guardarRuletaActual() { obtenerRuleta().titulo = document.getElementById('ruleta-titulo-input').value; localStorage.setItem('sb_ruletas', JSON.stringify(ruletas)); renderizarSelectorRuletas(); alert('Guardado'); }
+        function nuevaRuleta() {
+            const nombre = prompt('Nombre:'); if (!nombre) return;
+            const r = { id: 'r_' + Date.now(), titulo: nombre, piezas: [{id:1, texto:'Sí', peso:5, color:'#10b981'}, {id:2, texto:'No', peso:5, color:'#ef4444'}] };
+            ruletas.push(r); ruletaId = r.id; localStorage.setItem('sb_ruletas', JSON.stringify(ruletas)); localStorage.setItem('sb_ruleta_id', ruletaId);
+            renderizarSelectorRuletas(); renderizarPiezasRuleta(); dibujarRuleta();
         }
-
-        function guardarTituloRuleta() {
-            obtenerRuletaActual().titulo = document.getElementById('ruleta-titulo-input').value;
-            localStorage.setItem('sb_ruletas_todas', JSON.stringify(ruletasGuardadas));
+        function guardarTituloRuleta() { obtenerRuleta().titulo = document.getElementById('ruleta-titulo-input').value; localStorage.setItem('sb_ruletas', JSON.stringify(ruletas)); }
+        function renderizarPaleta() { 
+            const pal = document.getElementById('paleta-ruleta');
+            if (pal) pal.innerHTML = coloresPaleta.map(c => `<div style="width:24px; height:24px; border-radius:50%; background:${c}; cursor:pointer; border:2px solid ${c===colorSelecRuleta?'#000':'transparent'}" onclick="colorSelecRuleta='${c}'; renderizarPaleta();"></div>`).join(''); 
         }
-
-        function toggleTodosIguales() {
-            const current = obtenerRuletaActual();
-            current.todosIguales = document.getElementById('check-todos-iguales').checked;
-            if (current.todosIguales) current.piezas.forEach(p => p.peso = 5);
-            localStorage.setItem('sb_ruletas_todas', JSON.stringify(ruletasGuardadas));
-            renderizarPiezasRuleta();
-            dibujarRuleta();
-        }
-
-        function renderizarPaleta() {
-            const cont = document.getElementById('paleta-ruleta');
-            if (!cont) return;
-            cont.innerHTML = coloresPaleta.map(c => `<div style="width: 26px; height: 26px; border-radius: 50%; cursor: pointer; background: ${c}; border: 2px solid ${c === colorSeleccionado ? '#000' : 'transparent'};" onclick="colorSeleccionado='${c}'; renderizarPaleta();"></div>`).join('');
-        }
-
         function agregarPiezaRuleta() {
-            const inp = document.getElementById('nueva-pieza-texto');
-            const txt = inp.value.trim();
-            if (!txt) return alert('Escribe el nombre de la pieza.');
-            const current = obtenerRuletaActual();
-            current.piezas.push({ id: Date.now(), texto: txt, peso: 5, color: colorSeleccionado });
-            inp.value = '';
-            if (current.todosIguales) current.piezas.forEach(p => p.peso = 5);
-            guardarYActualizarRuleta();
+            const txt = document.getElementById('nueva-pieza-texto').value.trim(); if (!txt) return;
+            obtenerRuleta().piezas.push({ id: Date.now(), texto: txt, peso: 5, color: colorSelecRuleta });
+            document.getElementById('nueva-pieza-texto').value = ''; localStorage.setItem('sb_ruletas', JSON.stringify(ruletas));
+            renderizarPiezasRuleta(); dibujarRuleta();
         }
-
-        function cambiarNombrePieza(id, val) {
-            obtenerRuletaActual().piezas = obtenerRuletaActual().piezas.map(p => p.id === id ? { ...p, texto: val } : p);
-            localStorage.setItem('sb_ruletas_todas', JSON.stringify(ruletasGuardadas));
-            dibujarRuleta();
-        }
-
-        function cambiarPesoPieza(id, val) {
-            const current = obtenerRuletaActual();
-            if (current.todosIguales) return;
-            let pVal = parseInt(val) || 1;
-            current.piezas = current.piezas.map(p => p.id === id ? { ...p, peso: pVal } : p);
-            guardarYActualizarRuleta();
-        }
-
-        function eliminarPiezaRuleta(id) {
-            const current = obtenerRuletaActual();
-            if (current.piezas.length <= 2) return alert('Se necesitan al menos 2 piezas.');
-            current.piezas = current.piezas.filter(p => p.id !== id);
-            if (current.todosIguales) current.piezas.forEach(p => p.peso = 5);
-            guardarYActualizarRuleta();
-        }
-
-        function guardarYActualizarRuleta() {
-            localStorage.setItem('sb_ruletas_todas', JSON.stringify(ruletasGuardadas));
-            renderizarPiezasRuleta();
-            dibujarRuleta();
-        }
-
+        function cambiarNombrePieza(id, val) { obtenerRuleta().piezas.forEach(p => { if(p.id===id) p.texto=val; }); localStorage.setItem('sb_ruletas', JSON.stringify(ruletas)); dibujarRuleta(); }
+        function cambiarPesoPieza(id, val) { obtenerRuleta().piezas.forEach(p => { if(p.id===id) p.peso=parseInt(val)||1; }); localStorage.setItem('sb_ruletas', JSON.stringify(ruletas)); renderizarPiezasRuleta(); dibujarRuleta(); }
+        function eliminarPiezaRuleta(id) { const r = obtenerRuleta(); if(r.piezas.length<=2) return alert('Mínimo 2'); r.piezas = r.piezas.filter(p => p.id!==id); localStorage.setItem('sb_ruletas', JSON.stringify(ruletas)); renderizarPiezasRuleta(); dibujarRuleta(); }
         function renderizarPiezasRuleta() {
+            const r = obtenerRuleta();
             const cont = document.getElementById('lista-piezas-ruleta');
             if (!cont) return;
-            const current = obtenerRuletaActual();
-            const total = current.piezas.reduce((acc, p) => acc + p.peso, 0) || 1;
-            const dis = current.todosIguales ? 'disabled' : '';
-            cont.innerHTML = current.piezas.map(p => `
-                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; margin-bottom: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px;">
-                        <span style="display:inline-block; width:14px; height:14px; border-radius:50%; background:${p.color};"></span>
-                        <input type="text" value="${p.texto}" oninput="cambiarNombrePieza(${p.id}, this.value)" style="flex:1; border:1px solid var(--border-color); border-radius:6px; padding:4px 8px; font-size:12px; font-weight:bold; background:var(--card-bg); color:var(--text-color);">
-                        <button onclick="eliminarPiezaRuleta(${p.id})" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer;">✕</button>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--subtext-color);">
-                        <span>Peso:</span>
-                        <input type="range" min="1" max="50" value="${p.peso}" ${dis} oninput="cambiarPesoPieza(${p.id}, this.value)" style="flex:1;">
-                        <input type="number" min="1" max="100" value="${p.peso}" ${dis} oninput="cambiarPesoPieza(${p.id}, this.value)" style="width:45px; text-align:center; border:1px solid var(--border-color); border-radius:6px; background:var(--card-bg); color:var(--text-color);">
-                        <span>(${Math.round((p.peso/total)*100)}%)</span>
-                    </div>
+            cont.innerHTML = r.piezas.map(p => `
+                <div style="background:var(--card-bg); border:1px solid var(--border-color); padding:8px; border-radius:8px; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+                    <span style="width:12px; height:12px; border-radius:50%; background:${p.color}"></span>
+                    <input type="text" value="${p.texto}" oninput="cambiarNombrePieza(${p.id}, this.value)" style="flex:1; border:1px solid var(--border-color); background:var(--card-bg); color:var(--text-color); border-radius:4px; padding:4px;">
+                    <input type="range" min="1" max="50" value="${p.peso}" oninput="cambiarPesoPieza(${p.id}, this.value)">
+                    <button onclick="eliminarPiezaRuleta(${p.id})" style="border:none; background:none; color:#ef4444; cursor:pointer;">✕</button>
                 </div>
             `).join('');
         }
-
         function dibujarRuleta() {
-            const canvas = document.getElementById('canvas-ruleta');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const cx = canvas.width / 2, cy = canvas.height / 2, radio = cx - 4;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const current = obtenerRuletaActual();
-            const total = current.piezas.reduce((acc, p) => acc + p.peso, 0) || 1;
-            let inicio = anguloActual;
+            const canvas = document.getElementById('canvas-ruleta'); if (!canvas) return;
+            const ctx = canvas.getContext('2d'); const cx = canvas.width/2, cy = canvas.height/2, r = cx-4;
+            ctx.clearRect(0,0,canvas.width,canvas.height); const current = obtenerRuleta(); const tot = current.piezas.reduce((a,b)=>a+b.peso,0)||1;
+            let ini = angulo;
             current.piezas.forEach(p => {
-                const arco = (p.peso / total) * (2 * Math.PI);
-                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, radio, inicio, inicio + arco); ctx.closePath();
-                ctx.fillStyle = p.color; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#ffffff'; ctx.stroke();
-                ctx.save(); ctx.translate(cx, cy); ctx.rotate(inicio + arco / 2); ctx.textAlign = 'right';
-                ctx.fillStyle = '#ffffff'; ctx.font = 'bold 12px sans-serif'; ctx.fillText((p.texto || '').substring(0, 14), radio - 14, 4);
+                const arco = (p.peso/tot)*(2*Math.PI);
+                ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,ini,ini+arco); ctx.closePath();
+                ctx.fillStyle = p.color; ctx.fill(); ctx.stroke();
+
+                // DIBUJAR EL NOMBRE DENTRO DE LA PIEZA
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(ini + arco / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 11px sans-serif";
+                ctx.fillText(p.texto, r - 16, 4);
                 ctx.restore();
-                inicio += arco;
+
+                ini += arco;
             });
         }
-
         function girarRuleta() {
-            if (girando) return;
-            const current = obtenerRuletaActual();
-            if (current.piezas.length < 2) return alert('Añade al menos 2 piezas.');
-            girando = true;
-            document.getElementById('ruleta-ganador-box').style.display = 'none';
-            const extra = (Math.random() * 4 + 5) * 2 * Math.PI;
-            const duracion = 3500; const inicioTime = performance.now(); const iniAng = anguloActual;
-            function animar(t) {
-                const prog = Math.min((t - inicioTime) / duracion, 1);
-                anguloActual = iniAng + extra * (1 - Math.pow(1 - prog, 3));
-                dibujarRuleta();
-                if (prog < 1) requestAnimationFrame(animar);
+            if (girando) return; girando = true; document.getElementById('ruleta-ganador-box').style.display='none';
+            const extra = (Math.random()*4+5)*2*Math.PI; const dur = 3000; const t0 = performance.now(); const iniA = angulo;
+            function anim(t) {
+                const p = Math.min((t-t0)/dur, 1); angulo = iniA + extra * (1 - Math.pow(1-p,3)); dibujarRuleta();
+                if (p < 1) requestAnimationFrame(anim);
                 else {
-                    girando = false;
-                    const total = current.piezas.reduce((acc, p) => acc + p.peso, 0) || 1;
-                    const puntero = (1.5 * Math.PI - (anguloActual % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-                    let acum = 0;
-                    for (let p of current.piezas) {
-                        const arco = (p.peso / total) * (2 * Math.PI);
-                        if (puntero >= acum && puntero < acum + arco) {
-                            const box = document.getElementById('ruleta-ganador-box');
-                            box.textContent = `🎉 ¡Resultado: ${p.texto}!`;
-                            box.style.display = 'block';
-                            break;
+                    girando = false; const cur = obtenerRuleta(); const tot = cur.piezas.reduce((a,b)=>a+b.peso,0)||1;
+                    const ptr = (1.5*Math.PI - (angulo%(2*Math.PI))+2*Math.PI)%(2*Math.PI); let ac = 0;
+                    for(let piece of cur.piezas) {
+                        const arco = (piece.peso/tot)*(2*Math.PI);
+                        if(ptr >= ac && ptr < ac+arco) {
+                            const b = document.getElementById('ruleta-ganador-box'); b.textContent=`🎉 Ganador: ${piece.texto}`; b.style.display='block'; break;
                         }
-                        acum += arco;
+                        ac += arco;
                     }
                 }
             }
-            requestAnimationFrame(animar);
+            requestAnimationFrame(anim);
         }
 
-        // --- TEMPORIZADOR ---
-        let timerInterval = null, tiempoResto = 25 * 60, timerCorriendo = false;
+        // --- TEMPORIZADOR, PERFIL Y CONFIG ---
+        let timerInterval = null, tiempoResto = 25*60, timerCorriendo = false;
         function actualizarDisplayTimer() {
-            const m = Math.floor(tiempoResto / 60), s = tiempoResto % 60;
-            const txt = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-            document.getElementById('timer-display-text').textContent = txt;
-            document.getElementById('timer-inmersivo-display').textContent = txt;
+            const m = Math.floor(tiempoResto/60), s = tiempoResto%60;
+            document.getElementById('timer-display-text').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }
         function iniciarTemporizador() {
             if (timerCorriendo) return;
-            const mInput = parseInt(document.getElementById('timer-min-input').value) || 25;
-            if (tiempoResto === 25 * 60) tiempoResto = mInput * 60;
+            const mIn = parseInt(document.getElementById('timer-min-input').value)||25;
+            if (tiempoResto === 25*60) tiempoResto = mIn*60;
             timerCorriendo = true;
-            if (document.getElementById('check-bloqueo-notif').checked) document.getElementById('pantalla-bloqueo').style.display = 'flex';
             timerInterval = setInterval(() => {
-                if (tiempoResto > 0) { tiempoResto--; actualizarDisplayTimer(); }
-                else {
-                    clearInterval(timerInterval); timerCorriendo = false;
-                    userXP += 20; localStorage.setItem('sb_xp', userXP); actualizarUIRecompensas();
-                    alert('¡Temporizador finalizado! Ganaste +20 XP.');
-                    desactivarModoInmersivo();
-                }
+                if(tiempoResto > 0) { tiempoResto--; actualizarDisplayTimer(); }
+                else { clearInterval(timerInterval); timerCorriendo=false; userXP+=20; localStorage.setItem('sb_xp',userXP); actualizarUIRecompensas(); alert('¡Temporizador listo! +20 XP'); }
             }, 1000);
         }
-        function pausarTemporizador() { clearInterval(timerInterval); timerCorriendo = false; }
-        function reiniciarTemporizador() {
-            clearInterval(timerInterval); timerCorriendo = false;
-            tiempoResto = (parseInt(document.getElementById('timer-min-input').value) || 25) * 60;
-            actualizarDisplayTimer(); desactivarModoInmersivo();
-        }
-        function toggleBloqueoNotificaciones() {
-            if (document.getElementById('check-bloqueo-notif').checked && timerCorriendo) document.getElementById('pantalla-bloqueo').style.display = 'flex';
-        }
-        function desactivarModoInmersivo() {
-            document.getElementById('pantalla-bloqueo').style.display = 'none';
-            document.getElementById('check-bloqueo-notif').checked = false;
-        }
+        function pausarTemporizador() { clearInterval(timerInterval); timerCorriendo=false; }
+        function reiniciarTemporizador() { clearInterval(timerInterval); timerCorriendo=false; tiempoResto=(parseInt(document.getElementById('timer-min-input').value)||25)*60; actualizarDisplayTimer(); }
 
-        function resetearTodo() {
-            if (confirm('¿Seguro que deseas borrar todos los datos guardados?')) { localStorage.clear(); location.reload(); }
+        function toggleDarkMode() { 
+            document.body.classList.toggle('dark-mode'); 
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('sb_dark', isDark);
+            aplicarIdioma(localStorage.getItem('sb_lang')||'es');
+        }
+        function cambiarFondo(cls) { document.body.className = ''; document.body.classList.add(cls); if(document.body.classList.contains('dark-mode')) document.body.classList.add('dark-mode'); localStorage.setItem('sb_bg', cls); }
+        function cambiarFotoPerfil(inp) { if(inp.files && inp.files[0]) { const r = new FileReader(); r.onload = function(e) { localStorage.setItem('sb_foto', e.target.result); aplicarFoto(e.target.result); }; r.readAsDataURL(inp.files[0]); } }
+        function aplicarFoto(src) { document.getElementById('header-avatar').innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`; document.getElementById('perfil-avatar-grande').innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`; }
+        function autoGuardarPerfil() {
+            const n = document.getElementById('input-nombre-perfil').value.trim(); const d = document.getElementById('input-desc-perfil').value.trim();
+            if(n) { document.getElementById('header-nombre').textContent=n; localStorage.setItem('sb_nom',n); }
+            if(d) { document.getElementById('header-desc').textContent=d; localStorage.setItem('sb_desc',d); }
         }
 
         window.onload = function() {
-            if (localStorage.getItem('sb_dark') === 'true') { document.body.classList.add('dark-mode'); document.getElementById('btn-dark-mode').textContent = 'Desactivar'; }
-            const bg = localStorage.getItem('sb_bg'); if (bg) cambiarFondo(bg);
-            const lang = localStorage.getItem('sb_lang') || 'es'; document.getElementById('select-idioma').value = lang; cambiarIdioma(lang);
-            const nom = localStorage.getItem('sb_nombre'); if (nom) { document.getElementById('header-nombre').textContent = nom; document.getElementById('input-nombre-perfil').value = nom; }
-            const desc = localStorage.getItem('sb_desc'); if (desc) { document.getElementById('header-desc').textContent = desc; document.getElementById('input-desc-perfil').value = desc; }
-            const foto = localStorage.getItem('sb_foto'); if (foto) aplicarFotoPerfil(foto);
+            const langGuardado = localStorage.getItem('sb_lang') || 'es';
+            document.getElementById('select-idioma').value = langGuardado;
+            aplicarIdioma(langGuardado);
+
+            if(localStorage.getItem('sb_dark')==='true') document.body.classList.add('dark-mode');
+            const bg = localStorage.getItem('sb_bg'); if(bg) cambiarFondo(bg);
+            const nom = localStorage.getItem('sb_nom'); if(nom) { document.getElementById('header-nombre').textContent=nom; document.getElementById('input-nombre-perfil').value=nom; }
+            const desc = localStorage.getItem('sb_desc'); if(desc) { document.getElementById('header-desc').textContent=desc; document.getElementById('input-desc-perfil').value=desc; }
+            const foto = localStorage.getItem('sb_foto'); if(foto) aplicarFoto(foto);
             
             const hoy = new Date(); document.getElementById('select-mes').value = hoy.getMonth(); document.getElementById('select-anio').value = hoy.getFullYear();
-            renderizarCalendarioAvanzado(); renderizarTareas(); renderizarNotasLista(); renderizarHistorialCalc();
+            renderizarCalendarioAvanzado(); renderizarEventosCalendario(); renderizarTareas(); renderizarNotasLista(); renderizarHistorialCalc();
             renderizarPaleta(); renderizarSelectorRuletas(); renderizarPiezasRuleta(); dibujarRuleta();
             actualizarDisplayTimer(); actualizarUIRecompensas();
         };
