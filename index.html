@@ -395,13 +395,14 @@
         </div>
     </section>
 
-    <nav class="nav-inferior">
-        <a class="nav-item activo" onclick="mostrarVista('inicio', this)"><span class="nav-icon">🏠</span><span>inicio</span></a>
-        <a class="nav-item" onclick="mostrarVista('funciones', this)"><span class="nav-icon">📁</span><span>funciones</span></a>
-        <a class="nav-item" onclick="mostrarVista('tienda', this)"><span class="nav-icon">🛒</span><span>tienda</span></a>
-        <a class="nav-item" onclick="mostrarVista('perfil', this)"><span class="nav-icon">👤</span><span>perfil</span></a>
-        <a class="nav-item" onclick="mostrarVista('config', this)"><span class="nav-icon">⚙️</span><span>config</span></a>
-    </nav>
+       <nav class="nav-inferior">
+        <div class="nav-item activo" onclick="mostrarVista('inicio', this)"><span class="nav-icon">🏠</span><span>inicio</span></div>
+        <div class="nav-item" onclick="mostrarVista('funciones', this)"><span class="nav-icon">📁</span><span>funciones</span></div>
+        <div class="nav-item" onclick="mostrarVista('tienda', this)"><span class="nav-icon">🛒</span><span>tienda</span></div>
+        <div class="nav-item" onclick="mostrarVista('perfil', this)"><span class="nav-icon">👤</span><span>perfil</span></div>
+        <div class="nav-item" onclick="mostrarVista('config', this)"><span class="nav-icon">⚙️</span><span>config</span></div>
+       </nav>
+    
 
     <script>
         function mostrarVista(idVista, navEl) {
