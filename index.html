@@ -216,7 +216,7 @@
             </div>
         </div>
     </section>
-        <section id="vista-calculadora" class="vista" style="display: none;">
+    <section id="vista-calculadora" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="text-align: left; padding: 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">
                 <h3 style="margin: 0; font-size: 16px;">🧮 Calculadora Tradicional</h3>
@@ -344,7 +344,7 @@
         <div id="timer-inmersivo-display" style="font-size: 64px; font-weight: 800; font-family: monospace; margin-bottom: 30px; color: #38bdf8;">25:00</div>
         <button onclick="desactivarModoInmersivo()" style="background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 14px;">Desbloquear y Salir</button>
     </div>
-        <section id="vista-perfil" class="vista" style="display: none;">
+    <section id="vista-perfil" class="vista" style="display: none;">
         <div class="tarjeta-seccion" style="padding: 22px; text-align: center;">
             <div style="width: 90px; height: 90px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden; border: 3px solid #6366f1;" id="perfil-avatar-grande">👤</div>
             <label style="background: #6366f1; color: white; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: inline-block; margin-bottom: 15px;">
@@ -395,14 +395,13 @@
         </div>
     </section>
 
-       <nav class="nav-inferior">
-        <div class="nav-item activo" onclick="mostrarVista('inicio', this)"><span class="nav-icon">🏠</span><span>inicio</span></div>
-        <div class="nav-item" onclick="mostrarVista('funciones', this)"><span class="nav-icon">📁</span><span>funciones</span></div>
-        <div class="nav-item" onclick="mostrarVista('tienda', this)"><span class="nav-icon">🛒</span><span>tienda</span></div>
-        <div class="nav-item" onclick="mostrarVista('perfil', this)"><span class="nav-icon">👤</span><span>perfil</span></div>
-        <div class="nav-item" onclick="mostrarVista('config', this)"><span class="nav-icon">⚙️</span><span>config</span></div>
-       </nav>
-    
+    <nav class="nav-inferior">
+        <a class="nav-item activo" onclick="mostrarVista('inicio', this)"><span class="nav-icon">🏠</span><span>inicio</span></a>
+        <a class="nav-item" onclick="mostrarVista('funciones', this)"><span class="nav-icon">📁</span><span>funciones</span></a>
+        <a class="nav-item" onclick="mostrarVista('tienda', this)"><span class="nav-icon">🛒</span><span>tienda</span></a>
+        <a class="nav-item" onclick="mostrarVista('perfil', this)"><span class="nav-icon">👤</span><span>perfil</span></a>
+        <a class="nav-item" onclick="mostrarVista('config', this)"><span class="nav-icon">⚙️</span><span>config</span></a>
+    </nav>
 
     <script>
         function mostrarVista(idVista, navEl) {
@@ -648,7 +647,10 @@
             }
             document.getElementById('editor-nota-view').style.display = 'none';
             document.getElementById('contenedor-lista-notas').style.display = 'block';
-            function renderizarNotasLista() {
+            renderizarNotasLista();
+        };
+
+        function renderizarNotasLista() {
             const cont = document.getElementById('lista-notas');
             if (notas.length === 0) { cont.innerHTML = '<p style="font-size: 12px; color: #9ca3af; text-align: center;">No hay notas guardadas.</p>'; return; }
             cont.innerHTML = notas.map(n => `
@@ -781,17 +783,8 @@
             renderizarSelectorRuletas();
             renderizarPiezasRuleta();
             dibujarRuleta();
-        }
-
-        function guardarRuletaActual() {
-            const current = obtenerRuletaActual();
-            current.titulo = document.getElementById('ruleta-titulo-input').value.trim() || 'Sin título';
-            localStorage.setItem('sb_ruletas_todas', JSON.stringify(ruletasGuardadas));
-            renderizarSelectorRuletas();
-            alert('¡Ruleta guardada exitosamente!');
-        }
-
-        function nuevaRuleta() {
+      }
+      function nuevaRuleta() {
             const nombre = prompt('Nombre para la nueva ruleta:');
             if (!nombre) return;
             const nueva = { id: 'r_' + Date.now(), titulo: nombre, todosIguales: false, piezas: [{ id: Date.now() + 1, texto: 'Opción 1', peso: 5, color: '#3b82f6' }, { id: Date.now() + 2, texto: 'Opción 2', peso: 5, color: '#ec4899' }] };
@@ -885,7 +878,8 @@
                 </div>
             `).join('');
         }
-            function dibujarRuleta() {
+
+        function dibujarRuleta() {
             const canvas = document.getElementById('canvas-ruleta');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
